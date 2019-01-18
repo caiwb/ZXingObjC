@@ -43,7 +43,7 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
         }
     }
     
-    __block NSInteger sucCount;
+    __block NSInteger sucCount = 0;
     NSMutableArray *zxingFailedArr = [[NSMutableArray alloc] init];
     NSMutableArray *cidetFailedArr = [[NSMutableArray alloc] init];
     // ZXing
@@ -95,6 +95,23 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
         NSLog(@"CIDetector cost: %lf ms", ms);
         sucCount = 0;
     });
+    
+    NSLog(@"\n");
+    NSLog(@"**********************");
+    NSLog(@"ZXing failed list:");
+    NSMutableString *names = [NSMutableString string];
+    for (NSString *name in zxingFailedArr) {
+        [names appendString:[NSString stringWithFormat:@"%@, ", name]];
+    }
+    NSLog(@"%@", names);
+    NSLog(@"**********************");
+    NSLog(@"CIDetector failed list:");
+    names = [NSMutableString string];
+    for (NSString *name in cidetFailedArr) {
+        [names appendString:[NSString stringWithFormat:@"%@, ", name]];
+    }
+    NSLog(@"%@", names);
+    NSLog(@"**********************");
 }
 
 @end

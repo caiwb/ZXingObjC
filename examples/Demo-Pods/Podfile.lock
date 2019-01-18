@@ -1,0 +1,18 @@
+PODS:
+  - ZXingObjC (3.6.4):
+    - ZXingObjC/All (= 3.6.4)
+  - ZXingObjC/All (3.6.4)
+
+DEPENDENCIES:
+  - ZXingObjC (from `../../`)
+
+EXTERNAL SOURCES:
+  ZXingObjC:
+    :path: "../../"
+
+SPEC CHECKSUMS:
+  ZXingObjC: 7da02d8f9e081f7dc2e57e7f41d3cff616a2525a
+
+PODFILE CHECKSUM: 7fa03d2f468041bf53a1463fe1291b6b0c942abb
+
+COCOAPODS: 1.5.0

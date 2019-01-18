@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  BenchmarkViewController.h
 //  Demo-Pods
 //
 //  Created by caiwb on 2019/1/18.
@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UITableViewController
+NS_ASSUME_NONNULL_BEGIN
+
+@interface BenchmarkViewController : UIViewController
 
 @end
 
+NS_ASSUME_NONNULL_END

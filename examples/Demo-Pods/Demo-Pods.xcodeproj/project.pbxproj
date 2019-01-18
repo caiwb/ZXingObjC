@@ -55,7 +55,7 @@
 		39E9A52021F1B5E000CF8446 /* qr_184.png in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A46721F1B5E000CF8446 /* qr_184.png */; };
 		39E9A52121F1B5E000CF8446 /* qr_147.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A46821F1B5E000CF8446 /* qr_147.jpg */; };
 		39E9A52221F1B5E000CF8446 /* qr_146.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A46921F1B5E000CF8446 /* qr_146.jpg */; };
-		39E9A52321F1B5E000CF8446 /* qr_185.png in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A46A21F1B5E000CF8446 /* qr_185.png */; };
+		39E9A52321F1B5E000CF8446 /* qr_144.png in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A46A21F1B5E000CF8446 /* qr_144.png */; };
 		39E9A52421F1B5E000CF8446 /* qr_46.png in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A46B21F1B5E000CF8446 /* qr_46.png */; };
 		39E9A52521F1B5E000CF8446 /* qr_52.png in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A46C21F1B5E000CF8446 /* qr_52.png */; };
 		39E9A52621F1B5E000CF8446 /* qr_85.png in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A46D21F1B5E000CF8446 /* qr_85.png */; };
@@ -200,6 +200,7 @@
 		39E9A5B121F1B5E000CF8446 /* qr_158.png in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A4F821F1B5E000CF8446 /* qr_158.png */; };
 		39E9A5B221F1B5E000CF8446 /* qr_170.png in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A4F921F1B5E000CF8446 /* qr_170.png */; };
 		39E9A5B321F1B5E000CF8446 /* qr_164.png in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A4FA21F1B5E000CF8446 /* qr_164.png */; };
+		39E9A5B821F1C3F500CF8446 /* BenchmarkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39E9A5B721F1C3F500CF8446 /* BenchmarkViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -255,7 +256,7 @@
 		39E9A46721F1B5E000CF8446 /* qr_184.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_184.png; sourceTree = "<group>"; };
 		39E9A46821F1B5E000CF8446 /* qr_147.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = qr_147.jpg; sourceTree = "<group>"; };
 		39E9A46921F1B5E000CF8446 /* qr_146.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = qr_146.jpg; sourceTree = "<group>"; };
-		39E9A46A21F1B5E000CF8446 /* qr_185.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_185.png; sourceTree = "<group>"; };
+		39E9A46A21F1B5E000CF8446 /* qr_144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_144.png; sourceTree = "<group>"; };
 		39E9A46B21F1B5E000CF8446 /* qr_46.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_46.png; sourceTree = "<group>"; };
 		39E9A46C21F1B5E000CF8446 /* qr_52.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_52.png; sourceTree = "<group>"; };
 		39E9A46D21F1B5E000CF8446 /* qr_85.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_85.png; sourceTree = "<group>"; };
@@ -400,6 +401,8 @@
 		39E9A4F821F1B5E000CF8446 /* qr_158.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_158.png; sourceTree = "<group>"; };
 		39E9A4F921F1B5E000CF8446 /* qr_170.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_170.png; sourceTree = "<group>"; };
 		39E9A4FA21F1B5E000CF8446 /* qr_164.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_164.png; sourceTree = "<group>"; };
+		39E9A5B621F1C3F500CF8446 /* BenchmarkViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BenchmarkViewController.h; sourceTree = "<group>"; };
+		39E9A5B721F1C3F500CF8446 /* BenchmarkViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BenchmarkViewController.m; sourceTree = "<group>"; };
 		3ED13F23C94C40ED8B4ADD32 /* Pods-Demo-Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo-Pods.release.xcconfig"; path = "Pods/Target Support Files/Pods-Demo-Pods/Pods-Demo-Pods.release.xcconfig"; sourceTree = "<group>"; };
 		82A8497F3C406B14E3E980BD /* libPods-Demo-Pods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Demo-Pods.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -441,6 +444,7 @@
 				39E9A2B321F17FFF00CF8446 /* AppDelegate.m */,
 				39E9A2B521F17FFF00CF8446 /* ViewController.h */,
 				39E9A2B621F17FFF00CF8446 /* ViewController.m */,
+				39E9A5B421F1C3DE00CF8446 /* ViewControllers */,
 				39E9A2B821F17FFF00CF8446 /* Main.storyboard */,
 				39E9A2BE21F1800000CF8446 /* Assets.xcassets */,
 				39E9A2C021F1800000CF8446 /* LaunchScreen.storyboard */,
@@ -598,6 +602,7 @@
 				39E9A44321F1B5E000CF8446 /* qr_141.png */,
 				39E9A45621F1B5E000CF8446 /* qr_142.png */,
 				39E9A45F21F1B5E000CF8446 /* qr_143.png */,
+				39E9A46A21F1B5E000CF8446 /* qr_144.png */,
 				39E9A47F21F1B5E000CF8446 /* qr_145.png */,
 				39E9A46921F1B5E000CF8446 /* qr_146.jpg */,
 				39E9A46821F1B5E000CF8446 /* qr_147.jpg */,
@@ -639,9 +644,17 @@
 				39E9A44921F1B5E000CF8446 /* qr_182.png */,
 				39E9A44C21F1B5E000CF8446 /* qr_183.png */,
 				39E9A46721F1B5E000CF8446 /* qr_184.png */,
-				39E9A46A21F1B5E000CF8446 /* qr_185.png */,
 			);
 			path = "res-qrcode";
+			sourceTree = "<group>";
+		};
+		39E9A5B421F1C3DE00CF8446 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				39E9A5B621F1C3F500CF8446 /* BenchmarkViewController.h */,
+				39E9A5B721F1C3F500CF8446 /* BenchmarkViewController.m */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		6E0C2C449A15C8ABB4C2AA2D /* Pods */ = {
@@ -863,7 +876,7 @@
 				39E9A59B21F1B5E000CF8446 /* qr_162.png in Resources */,
 				39E9A59221F1B5E000CF8446 /* qr_175.png in Resources */,
 				39E9A54121F1B5E000CF8446 /* qr_123.png in Resources */,
-				39E9A52321F1B5E000CF8446 /* qr_185.png in Resources */,
+				39E9A52321F1B5E000CF8446 /* qr_144.png in Resources */,
 				39E9A4FB21F1B5E000CF8446 /* qr_169.png in Resources */,
 				39E9A51B21F1B5E000CF8446 /* qr_153.png in Resources */,
 				39E9A57421F1B5E000CF8446 /* qr_29.png in Resources */,
@@ -945,6 +958,7 @@
 				39E9A2B721F17FFF00CF8446 /* ViewController.m in Sources */,
 				39E9A2BD21F17FFF00CF8446 /* Demo_Pods.xcdatamodeld in Sources */,
 				39E9A2C521F1800000CF8446 /* main.m in Sources */,
+				39E9A5B821F1C3F500CF8446 /* BenchmarkViewController.m in Sources */,
 				39E9A2B421F17FFF00CF8446 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

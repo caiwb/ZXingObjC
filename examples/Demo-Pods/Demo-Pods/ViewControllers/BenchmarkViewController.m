@@ -75,7 +75,6 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
         sucCount = 0;
     });
     
-    
     // CIDetector
     benchmark(^{
         CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{CIDetectorAccuracy : CIDetectorAccuracyHigh}];

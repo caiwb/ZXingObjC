@@ -201,6 +201,7 @@
 		39E9A5B221F1B5E000CF8446 /* qr_170.png in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A4F921F1B5E000CF8446 /* qr_170.png */; };
 		39E9A5B321F1B5E000CF8446 /* qr_164.png in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A4FA21F1B5E000CF8446 /* qr_164.png */; };
 		39E9A5B821F1C3F500CF8446 /* BenchmarkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39E9A5B721F1C3F500CF8446 /* BenchmarkViewController.m */; };
+		39E9A5C021F1FDC700CF8446 /* SingleImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39E9A5BF21F1FDC700CF8446 /* SingleImageViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -403,6 +404,8 @@
 		39E9A4FA21F1B5E000CF8446 /* qr_164.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_164.png; sourceTree = "<group>"; };
 		39E9A5B621F1C3F500CF8446 /* BenchmarkViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BenchmarkViewController.h; sourceTree = "<group>"; };
 		39E9A5B721F1C3F500CF8446 /* BenchmarkViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BenchmarkViewController.m; sourceTree = "<group>"; };
+		39E9A5BE21F1FDC700CF8446 /* SingleImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SingleImageViewController.h; sourceTree = "<group>"; };
+		39E9A5BF21F1FDC700CF8446 /* SingleImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SingleImageViewController.m; sourceTree = "<group>"; };
 		3ED13F23C94C40ED8B4ADD32 /* Pods-Demo-Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo-Pods.release.xcconfig"; path = "Pods/Target Support Files/Pods-Demo-Pods/Pods-Demo-Pods.release.xcconfig"; sourceTree = "<group>"; };
 		82A8497F3C406B14E3E980BD /* libPods-Demo-Pods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Demo-Pods.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -653,6 +656,8 @@
 			children = (
 				39E9A5B621F1C3F500CF8446 /* BenchmarkViewController.h */,
 				39E9A5B721F1C3F500CF8446 /* BenchmarkViewController.m */,
+				39E9A5BE21F1FDC700CF8446 /* SingleImageViewController.h */,
+				39E9A5BF21F1FDC700CF8446 /* SingleImageViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -955,6 +960,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39E9A5C021F1FDC700CF8446 /* SingleImageViewController.m in Sources */,
 				39E9A2B721F17FFF00CF8446 /* ViewController.m in Sources */,
 				39E9A2BD21F17FFF00CF8446 /* Demo_Pods.xcdatamodeld in Sources */,
 				39E9A2C521F1800000CF8446 /* main.m in Sources */,

@@ -23,6 +23,7 @@
     self.titles = @[].mutableCopy;
     self.classNames = @[].mutableCopy;
     [self addCell:@"Benchmark" class:@"BenchmarkViewController"];
+    [self addCell:@"SingleImage" class:@"SingleImageViewController"];
 }
 
 - (void)addCell:(NSString *)title class:(NSString *)className {

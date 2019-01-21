@@ -17,11 +17,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     
-    NSInteger i = 13;
+    NSInteger i = 185;
     NSString *name = [NSString stringWithFormat:@"qr_%zd", i];
     UIImage *img = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:@"png"]] ?:
-    [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:@"jpg"]];
+                   [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:@"jpg"]];
     
     ZXQRCodeReader *reader = [[ZXQRCodeReader alloc] init];
     ZXLuminanceSource *source = [[ZXCGImageLuminanceSource alloc] initWithCGImage:img.CGImage];
@@ -41,6 +42,12 @@
     else {
         NSLog(@"error: %@", error);
     }
+    
+    // CIDetector
+    CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{CIDetectorAccuracy : CIDetectorAccuracyHigh}];
+    CIQRCodeFeature *features = (CIQRCodeFeature *)[[detector featuresInImage:[CIImage imageWithCGImage:img.CGImage]] firstObject];
+    contents = features.messageString;
+    NSLog(@"");
 }
 
 @end

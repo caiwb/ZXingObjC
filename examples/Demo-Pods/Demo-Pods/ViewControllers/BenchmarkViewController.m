@@ -30,8 +30,9 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
     
     self.view.backgroundColor = [UIColor whiteColor];
     // load imgs
-    NSMutableArray *imgs = [[NSMutableArray alloc] initWithCapacity:184];
-    for (NSInteger i = 1; i < 185; i ++) {
+    NSInteger count = 185;
+    NSMutableArray *imgs = [[NSMutableArray alloc] initWithCapacity:count];
+    for (NSInteger i = 1; i <= count; i ++) {
         NSString *name = [NSString stringWithFormat:@"qr_%zd", i];
         UIImage *img = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:@"png"]] ?:
                        [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:@"jpg"]];
@@ -67,6 +68,7 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
             else {
                 [zxingFailedArr addObject:@(idx + 1)];
             }
+            [reader reset];
         }];
     }, ^(double ms) {
         NSLog(@"**********************");

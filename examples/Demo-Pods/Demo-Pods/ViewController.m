@@ -22,8 +22,10 @@
     self.title = @"QRCode Demo";
     self.titles = @[].mutableCopy;
     self.classNames = @[].mutableCopy;
+    
     [self addCell:@"Benchmark" class:@"BenchmarkViewController"];
     [self addCell:@"SingleImage" class:@"SingleImageViewController"];
+    [self addCell:@"PhotoDetect" class:@"PhotoDetectViewController"];
 }
 
 - (void)addCell:(NSString *)title class:(NSString *)className {
@@ -36,6 +38,10 @@
 }
 
 #pragma mark - Table View
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 60;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"YY"];

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1EE78A577A8DD71FA91617CA /* libPods-Demo-Pods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82A8497F3C406B14E3E980BD /* libPods-Demo-Pods.a */; };
+		3977EC3921F59DA2005654E1 /* qr_185.png in Resources */ = {isa = PBXBuildFile; fileRef = 3977EC3821F59DA2005654E1 /* qr_185.png */; };
+		3977EC4421F5B8BE005654E1 /* PhotoDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */; };
 		39E9A2B421F17FFF00CF8446 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 39E9A2B321F17FFF00CF8446 /* AppDelegate.m */; };
 		39E9A2B721F17FFF00CF8446 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39E9A2B621F17FFF00CF8446 /* ViewController.m */; };
 		39E9A2BA21F17FFF00CF8446 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A2B821F17FFF00CF8446 /* Main.storyboard */; };
@@ -206,6 +208,9 @@
 
 /* Begin PBXFileReference section */
 		160B8C07E407C9DD2ACF0832 /* Pods-Demo-Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo-Pods.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Demo-Pods/Pods-Demo-Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		3977EC3821F59DA2005654E1 /* qr_185.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_185.png; sourceTree = "<group>"; };
+		3977EC4221F5B8BE005654E1 /* PhotoDetectViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoDetectViewController.h; sourceTree = "<group>"; };
+		3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoDetectViewController.m; sourceTree = "<group>"; };
 		39E9A2AF21F17FFF00CF8446 /* Demo-Pods.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Demo-Pods.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		39E9A2B221F17FFF00CF8446 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		39E9A2B321F17FFF00CF8446 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -647,6 +652,7 @@
 				39E9A44921F1B5E000CF8446 /* qr_182.png */,
 				39E9A44C21F1B5E000CF8446 /* qr_183.png */,
 				39E9A46721F1B5E000CF8446 /* qr_184.png */,
+				3977EC3821F59DA2005654E1 /* qr_185.png */,
 			);
 			path = "res-qrcode";
 			sourceTree = "<group>";
@@ -658,6 +664,8 @@
 				39E9A5B721F1C3F500CF8446 /* BenchmarkViewController.m */,
 				39E9A5BE21F1FDC700CF8446 /* SingleImageViewController.h */,
 				39E9A5BF21F1FDC700CF8446 /* SingleImageViewController.m */,
+				3977EC4221F5B8BE005654E1 /* PhotoDetectViewController.h */,
+				3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -868,6 +876,7 @@
 				39E9A50821F1B5E000CF8446 /* qr_97.png in Resources */,
 				39E9A53521F1B5E000CF8446 /* qr_92.png in Resources */,
 				39E9A53721F1B5E000CF8446 /* qr_86.png in Resources */,
+				3977EC3921F59DA2005654E1 /* qr_185.png in Resources */,
 				39E9A52421F1B5E000CF8446 /* qr_46.png in Resources */,
 				39E9A58721F1B5E000CF8446 /* qr_107.png in Resources */,
 				39E9A53621F1B5E000CF8446 /* qr_151.png in Resources */,
@@ -964,6 +973,7 @@
 				39E9A2B721F17FFF00CF8446 /* ViewController.m in Sources */,
 				39E9A2BD21F17FFF00CF8446 /* Demo_Pods.xcdatamodeld in Sources */,
 				39E9A2C521F1800000CF8446 /* main.m in Sources */,
+				3977EC4421F5B8BE005654E1 /* PhotoDetectViewController.m in Sources */,
 				39E9A5B821F1C3F500CF8446 /* BenchmarkViewController.m in Sources */,
 				39E9A2B421F17FFF00CF8446 /* AppDelegate.m in Sources */,
 			);

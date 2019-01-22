@@ -52,8 +52,6 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
     
     __block NSInteger sucCount = 0;
     NSMutableArray *zxingFailedArr = [[NSMutableArray alloc] init];
-    NSMutableArray *cidetFailedArr = [[NSMutableArray alloc] init];
-    NSMutableArray *mixedFailedArr = [[NSMutableArray alloc] init];
     
     // ZXing
     benchmark(^{
@@ -92,6 +90,7 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
         NSLog(@"\n");
     });
     
+    NSMutableArray *cidetFailedArr = [[NSMutableArray alloc] init];
     // CIDetector
     benchmark(^{
         CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{CIDetectorAccuracy : CIDetectorAccuracyHigh}];
@@ -122,6 +121,7 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
         NSLog(@"\n");
     });
     
+    NSMutableDictionary<NSNumber *, NSError *> *mixedFailedList = [[NSMutableDictionary alloc] init];
     // Optimize ZXing + CIDetector
     benchmark(^{
         NSArray *angles = @[@(0), @(90), @(1800), @(270), @(360)];
@@ -158,7 +158,7 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
                     break;
                 }
                 else if ([rotateAngles isEqualToNumber:@(360)]) {
-                    [mixedFailedArr addObject:@(idx + 1)];
+                    [mixedFailedList setObject:error forKey:@(idx + 1)];
                 }
                 [reader reset];
             }
@@ -172,8 +172,8 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
         NSLog(@"**********************");
         NSLog(@"Mix failed list:");
         NSMutableString *names = [NSMutableString string];
-        for (NSString *name in mixedFailedArr) {
-            [names appendString:[NSString stringWithFormat:@"%@, ", name]];
+        for (NSNumber *name in mixedFailedList.allKeys) {
+            [names appendString:[NSString stringWithFormat:@"%@: %zd, ", name, mixedFailedList[name].code]];
         }
         NSLog(@"%@", names);
         NSLog(@"**********************");

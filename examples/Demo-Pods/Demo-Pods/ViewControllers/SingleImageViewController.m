@@ -19,17 +19,18 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    NSInteger i = 185;
+    NSInteger i = 30;
     NSString *name = [NSString stringWithFormat:@"qr_%zd", i];
     UIImage *img = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:@"png"]] ?:
                    [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:@"jpg"]];
     
-    ZXQRCodeReader *reader = [[ZXQRCodeReader alloc] init];
     ZXLuminanceSource *source = [[ZXCGImageLuminanceSource alloc] initWithCGImage:img.CGImage];
     ZXBinaryBitmap *bitmap = [ZXBinaryBitmap binaryBitmapWithBinarizer:[ZXHybridBinarizer binarizerWithSource:source]];
-    
     NSError *error = nil;
     ZXDecodeHints *hints = [ZXDecodeHints hints];
+    hints.tryHarder = YES;
+    
+    ZXQRCodeReader *reader = [[ZXQRCodeReader alloc] init];
     ZXResult *result = [reader decode:bitmap
                                 hints:hints
                                 error:&error];

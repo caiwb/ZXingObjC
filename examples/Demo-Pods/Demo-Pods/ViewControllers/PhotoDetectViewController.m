@@ -26,7 +26,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     // Do any additional setup after loading the view.
-#define UseAL 0
+#define UseAL 1
 #if UseAL
     [self getFistAssetByALLib];
 #else
@@ -55,8 +55,8 @@
 - (void)getFistAssetByPHLib {
     PHFetchOptions *option = [[PHFetchOptions alloc] init];
     option.fetchLimit = 1;
-    NSSortDescriptor *endDateSort = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
-    option.sortDescriptors = @[endDateSort];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
+    option.sortDescriptors = @[sort];
     
     PHFetchResult *assets = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:option];
     PHAsset *asset = assets.firstObject;

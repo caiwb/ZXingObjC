@@ -27,8 +27,14 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     self.view.backgroundColor = [UIColor whiteColor];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self startBenchmark];
+    });
+}
+
+- (void)startBenchmark {
     // load imgs
     NSInteger count = 185;
     NSMutableArray *imgs = [[NSMutableArray alloc] initWithCapacity:count];
@@ -47,6 +53,8 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
     __block NSInteger sucCount = 0;
     NSMutableArray *zxingFailedArr = [[NSMutableArray alloc] init];
     NSMutableArray *cidetFailedArr = [[NSMutableArray alloc] init];
+    NSMutableArray *mixedFailedArr = [[NSMutableArray alloc] init];
+    
     // ZXing
     benchmark(^{
         ZXQRCodeReader *reader = [[ZXQRCodeReader alloc] init];
@@ -56,13 +64,10 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
             
             NSError *error = nil;
             ZXDecodeHints *hints = [ZXDecodeHints hints];
-            ZXResult *result = [reader decode:bitmap
-                                        hints:hints
-                                        error:&error];
-            NSString *contents = result.text;
-            ZXBarcodeFormat format = result.barcodeFormat;
             
-            if (contents.length && format == kBarcodeFormatQRCode) {
+            ZXResult *result = [reader decode:bitmap hints:hints error:&error];
+            NSString *contents = result.text;
+            if (contents.length) {
                 sucCount ++;
             }
             else {
@@ -75,6 +80,16 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
         NSLog(@"ZXing detecte suc: %zd", sucCount);
         NSLog(@"ZXing cost: %lf ms", ms);
         sucCount = 0;
+        
+        NSLog(@"**********************");
+        NSLog(@"ZXing failed list:");
+        NSMutableString *names = [NSMutableString string];
+        for (NSString *name in zxingFailedArr) {
+            [names appendString:[NSString stringWithFormat:@"%@, ", name]];
+        }
+        NSLog(@"%@", names);
+        NSLog(@"**********************");
+        NSLog(@"\n");
     });
     
     // CIDetector
@@ -95,24 +110,113 @@ static inline void benchmark(void (^block)(void), void (^complete)(double ms)) {
         NSLog(@"CIDetector detecte suc: %zd", sucCount);
         NSLog(@"CIDetector cost: %lf ms", ms);
         sucCount = 0;
+        
+        NSLog(@"**********************");
+        NSLog(@"CIDetector failed list:");
+        NSMutableString *names = [NSMutableString string];
+        for (NSString *name in cidetFailedArr) {
+            [names appendString:[NSString stringWithFormat:@"%@, ", name]];
+        }
+        NSLog(@"%@", names);
+        NSLog(@"**********************");
+        NSLog(@"\n");
     });
     
-    NSLog(@"\n");
-    NSLog(@"**********************");
-    NSLog(@"ZXing failed list:");
-    NSMutableString *names = [NSMutableString string];
-    for (NSString *name in zxingFailedArr) {
-        [names appendString:[NSString stringWithFormat:@"%@, ", name]];
+    // Optimize ZXing + CIDetector
+    benchmark(^{
+        NSArray *angles = @[@(0), @(90), @(1800), @(270), @(360)];
+        
+        ZXQRCodeReader *reader = [[ZXQRCodeReader alloc] init];
+        CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{CIDetectorAccuracy : CIDetectorAccuracyHigh}];
+        
+        [imgs enumerateObjectsUsingBlock:^(UIImage *img, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            for (NSNumber *rotateAngles in angles) {
+                CGImageRef cgimage = [self rotateImage:img.CGImage degrees:rotateAngles.doubleValue];
+                ZXLuminanceSource *source = [[ZXCGImageLuminanceSource alloc] initWithCGImage:cgimage];
+                ZXBinaryBitmap *bitmap = [ZXBinaryBitmap binaryBitmapWithBinarizer:[ZXHybridBinarizer binarizerWithSource:source]];
+                
+                NSError *error = nil;
+                ZXDecodeHints *hints = [ZXDecodeHints hints];
+                hints.tryHarder = YES;
+                ZXDecodeHints *pureHints = [hints copy];
+                pureHints.pureBarcode = YES;
+                
+                ZXResult *result = [reader decode:bitmap hints:hints error:&error];
+                if (!result) {
+                    result = [reader decode:bitmap hints:pureHints error:&error];
+                }
+                NSString *contents = result.text;
+                
+                if (!result) {
+                    CIQRCodeFeature *features = (CIQRCodeFeature *)[[detector featuresInImage:[CIImage imageWithCGImage:cgimage]] firstObject];
+                    contents = features.messageString;
+                }
+                
+                if (contents.length) {
+                    sucCount ++;
+                    break;
+                }
+                else if ([rotateAngles isEqualToNumber:@(360)]) {
+                    [mixedFailedArr addObject:@(idx + 1)];
+                }
+                [reader reset];
+            }
+        }];
+    }, ^(double ms) {
+        NSLog(@"**********************");
+        NSLog(@"Mix detecte suc: %zd", sucCount);
+        NSLog(@"Mix cost: %lf ms", ms);
+        sucCount = 0;
+        
+        NSLog(@"**********************");
+        NSLog(@"Mix failed list:");
+        NSMutableString *names = [NSMutableString string];
+        for (NSString *name in mixedFailedArr) {
+            [names appendString:[NSString stringWithFormat:@"%@, ", name]];
+        }
+        NSLog(@"%@", names);
+        NSLog(@"**********************");
+        NSLog(@"\n");
+    });
+}
+
+- (CGImageRef)rotateImage:(CGImageRef)original degrees:(double)degrees {
+    if (degrees == 0.0f) {
+        return original;
     }
-    NSLog(@"%@", names);
-    NSLog(@"**********************");
-    NSLog(@"CIDetector failed list:");
-    names = [NSMutableString string];
-    for (NSString *name in cidetFailedArr) {
-        [names appendString:[NSString stringWithFormat:@"%@, ", name]];
-    }
-    NSLog(@"%@", names);
-    NSLog(@"**********************");
+    double radians = -1 * degrees * (M_PI / 180);
+    
+    CGRect imgRect = CGRectMake(0, 0, CGImageGetWidth(original), CGImageGetHeight(original));
+    CGAffineTransform transform = CGAffineTransformMakeRotation(radians);
+    CGRect rotatedRect = CGRectApplyAffineTransform(imgRect, transform);
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(NULL,
+                                                 rotatedRect.size.width,
+                                                 rotatedRect.size.height,
+                                                 CGImageGetBitsPerComponent(original),
+                                                 0,
+                                                 colorSpace,
+                                                 kCGBitmapAlphaInfoMask & kCGImageAlphaPremultipliedFirst);
+    CGContextSetAllowsAntialiasing(context, FALSE);
+    CGContextSetInterpolationQuality(context, kCGInterpolationNone);
+    CGColorSpaceRelease(colorSpace);
+    
+    CGContextTranslateCTM(context,
+                          +(rotatedRect.size.width/2),
+                          +(rotatedRect.size.height/2));
+    CGContextRotateCTM(context, radians);
+    
+    CGContextDrawImage(context, CGRectMake(-imgRect.size.width / 2,
+                                           -imgRect.size.height / 2,
+                                           imgRect.size.width,
+                                           imgRect.size.height), original);
+    
+    CGImageRef rotatedImage = CGBitmapContextCreateImage(context);
+    CFRelease(context);
+    
+    return rotatedImage;
 }
 
 @end

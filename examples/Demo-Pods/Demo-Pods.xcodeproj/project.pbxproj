@@ -10,6 +10,7 @@
 		1EE78A577A8DD71FA91617CA /* libPods-Demo-Pods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82A8497F3C406B14E3E980BD /* libPods-Demo-Pods.a */; };
 		3977EC3921F59DA2005654E1 /* qr_185.png in Resources */ = {isa = PBXBuildFile; fileRef = 3977EC3821F59DA2005654E1 /* qr_185.png */; };
 		3977EC4421F5B8BE005654E1 /* PhotoDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */; };
+		3977EC4B21F603F8005654E1 /* qr_30的副本.png in Resources */ = {isa = PBXBuildFile; fileRef = 3977EC4A21F603F7005654E1 /* qr_30的副本.png */; };
 		39E9A2B421F17FFF00CF8446 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 39E9A2B321F17FFF00CF8446 /* AppDelegate.m */; };
 		39E9A2B721F17FFF00CF8446 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39E9A2B621F17FFF00CF8446 /* ViewController.m */; };
 		39E9A2BA21F17FFF00CF8446 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A2B821F17FFF00CF8446 /* Main.storyboard */; };
@@ -211,6 +212,7 @@
 		3977EC3821F59DA2005654E1 /* qr_185.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_185.png; sourceTree = "<group>"; };
 		3977EC4221F5B8BE005654E1 /* PhotoDetectViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoDetectViewController.h; sourceTree = "<group>"; };
 		3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoDetectViewController.m; sourceTree = "<group>"; };
+		3977EC4A21F603F7005654E1 /* qr_30的副本.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr_30的副本.png"; sourceTree = "<group>"; };
 		39E9A2AF21F17FFF00CF8446 /* Demo-Pods.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Demo-Pods.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		39E9A2B221F17FFF00CF8446 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		39E9A2B321F17FFF00CF8446 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -467,6 +469,7 @@
 		39E9A44121F1B5E000CF8446 /* res-qrcode */ = {
 			isa = PBXGroup;
 			children = (
+				3977EC4A21F603F7005654E1 /* qr_30的副本.png */,
 				39E9A48421F1B5E000CF8446 /* qr_1.png */,
 				39E9A48E21F1B5E000CF8446 /* qr_2.png */,
 				39E9A48F21F1B5E000CF8446 /* qr_3.png */,
@@ -924,6 +927,7 @@
 				39E9A54421F1B5E000CF8446 /* qr_121.png in Resources */,
 				39E9A55C21F1B5E000CF8446 /* qr_127.png in Resources */,
 				39E9A57221F1B5E000CF8446 /* qr_14.png in Resources */,
+				3977EC4B21F603F8005654E1 /* qr_30的副本.png in Resources */,
 				39E9A5B221F1B5E000CF8446 /* qr_170.png in Resources */,
 				39E9A58821F1B5E000CF8446 /* qr_148.png in Resources */,
 				39E9A51121F1B5E000CF8446 /* qr_56.png in Resources */,

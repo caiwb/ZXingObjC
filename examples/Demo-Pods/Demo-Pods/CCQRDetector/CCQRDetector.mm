@@ -9,9 +9,9 @@
 #import <opencv2/opencv.hpp>
 #import "CCQRDetector.h"
 #import "imgcodecs/ios.h"
-#import "TagDetector.h"
-#import "qrcode.h"
 #import "ZXingObjCQRCode.h"
+
+//#define QRDebugMode
 
 @implementation CCQRDetector
 
@@ -66,52 +66,6 @@ bool isSquare(std::vector<cv::Point> points) {
     return false;
 }
 
-// 通过at找正方形（不太好用）
-bool localizationAT(cv::Mat src, std::vector<std::vector<cv::Point>> &contours) {
-    TagFamily f("Tag36h11");
-    TagDetectorParams params;
-    TagDetector detector(f, params);
-    
-    QuadArray atquads = detector.processQR(src);
-    std::vector<ccqr::QRQuad> quads;
-    for (int i = 0; i < atquads.size(); i ++) {
-        ccqr::QRQuad quad(atquads[i]->p);
-        if (quad.selectSelf()) {
-            quads.push_back(quad);
-        }
-    }
-    sort(quads.begin(), quads.end(), [](const ccqr::QRQuad& q1, const ccqr::QRQuad& q2) {return q1.areas > q2.areas;});
-
-    std::map<int, std::vector<int>> select;
-    for (int i = 0; i < quads.size() - 1; i ++) {
-        for (int j = i + 1; j < quads.size(); j ++) {
-            if (quads[i].selectSimilar(quads[j]))
-                select[i].push_back(j);
-        }
-    }
-    if (select.size() > 0) {
-        for (auto sel : select) {
-            if (sel.second.size() > 1) {
-                return true;
-            }
-        }
-    }
-    else {
-        // 没有找到二维码，从 quads 中最大的正方形开始找
-//        for (int i = 0; i < quads.size() - 1; i ++) {
-//
-//        }
-        for (int i = 0; i < quads.size() - 1; i ++) {
-            ccqr::QRQuad quad = quads[i];
-            
-            std::vector<cv::Point> points(quad.p, quad.p + 4);
-            contours.push_back(points);
-        }
-//        contours[0].push_back(bigest);
-    }
-    return false;
-}
-
 // 将二维码剪裁出来
 - (std::vector<cv::Mat>)cropQRCodeFrameFromImage:(cv::Mat)src {
     cv::Mat srcOrigin = src.clone();
@@ -119,15 +73,17 @@ bool localizationAT(cv::Mat src, std::vector<std::vector<cv::Point>> &contours) 
     std::vector<cv::Mat> results;
     
     cv::cvtColor(src, output, CV_BGR2GRAY);
-//    cv::threshold(output, output, 10, 255, cv::THRESH_OTSU);
-    cv::adaptiveThreshold(output, output, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY, 83, 2);
+    cv::threshold(output, output, 10, 255, cv::THRESH_OTSU);
+//    cv::adaptiveThreshold(output, output, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY, 83, 2);
     
     resultAll = output.clone();
     cv::Mat resultAllScaled;
-    double scale = 256.f / min(resultAll.rows, resultAll.cols);
+    double scale = 256.f / std::min(resultAll.rows, resultAll.cols);
     cv::Size size = cv::Size(resultAll.cols * scale, resultAll.rows * scale);
     cv::resize(resultAll, resultAllScaled, size);
+#ifndef QRDebugMode
     results.push_back(resultAllScaled);
+#endif
     
     cv::GaussianBlur(output, output, cv::Size(5, 5), cv::BORDER_CONSTANT);
     cv::Canny(output, output, 100, 200);
@@ -135,29 +91,33 @@ bool localizationAT(cv::Mat src, std::vector<std::vector<cv::Point>> &contours) 
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
     
-//    cv::Mat result = cv::Mat::zeros(src.size(), CV_8UC3);
-    for (int i = 0; i < contours.size(); i ++) {
-//        cv::drawContours(result, contours, i, cv::Scalar(255, 0, 0), 2, 8);
-    }
-    cv::findContours(output, contours, hierarchy, RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+    cv::findContours(output, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
+#ifdef QRDebugMode
+    resultAll = cv::Mat::zeros(src.size(), CV_8UC3);
+#endif
     for (size_t i = 0; i < contours.size(); i++) {
         if (!isSquare(contours[i])) {
             continue;
         }
+#ifndef QRDebugMode
         cv::Rect rect = cv::boundingRect(contours[i]);
         cv::Mat result = resultAll(rect);
-        int minLine = min(result.rows, result.cols);
-        
+        int minLine = std::min(result.rows, result.cols);
+
         double scale = 256.f / minLine;
         cv::Size size = cv::Size(result.cols * scale, result.rows * scale);
         cv::resize(result, result, size);
-        
+
         results.push_back(result);
-        
-//        cv::drawContours(threshold, contours, static_cast<int>(i), cv::Scalar(255, 0, 0), 2, 8);
     }
-//    results.push_back(threshold);
+#else
+        cv::drawContours(resultAll, contours, static_cast<int>(i), cv::Scalar(255, 0, 0), 2, 8);
+    }
+    results.push_back(resultAll);
+#endif
+
+    sort(results.begin(), results.end(), [](const cv::Mat& m1, const cv::Mat& m2) {return m1.rows * m1.cols > m2.rows * m2.cols;});
     return results;
 }
 
@@ -191,8 +151,11 @@ bool localizationAT(cv::Mat src, std::vector<std::vector<cv::Point>> &contours) 
         for (int i = 0; i < results.size(); i ++) {
             cv::Mat result = results[i];
             UIImage *output = MatToUIImage(result);
-//            return output;
+#ifdef QRDebugMode
+            return output;
+#endif
             if ([self detectQRCodeFromImage:output]) {
+                NSLog(@"CCQRDetector: detect success");
                 return output;
             }
         }

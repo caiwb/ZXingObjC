@@ -19,7 +19,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UIImage *image = [UIImage imageNamed:@"light_gray"];
+    UIImage *image = [UIImage imageNamed:@"screen_shot_1"];
     image = [[CCQRDetector detector] cropQRCodeFromImage:image];
     
     UIImageView *imgv = [[UIImageView alloc] initWithImage:image];

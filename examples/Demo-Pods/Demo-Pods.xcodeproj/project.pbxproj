@@ -8,6 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		1EE78A577A8DD71FA91617CA /* libPods-Demo-Pods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82A8497F3C406B14E3E980BD /* libPods-Demo-Pods.a */; };
+		3912E72521F6F16B007F2995 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3912E72421F6F16B007F2995 /* opencv2.framework */; };
+		3912E74A21F73056007F2995 /* UnionFindSimple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E72A21F73055007F2995 /* UnionFindSimple.cpp */; };
+		3912E74B21F73056007F2995 /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E72B21F73055007F2995 /* Geometry.cpp */; };
+		3912E74C21F73056007F2995 /* TagFamily.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E72C21F73055007F2995 /* TagFamily.cpp */; };
+		3912E74D21F73056007F2995 /* DebugImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E72D21F73055007F2995 /* DebugImage.cpp */; };
+		3912E74E21F73056007F2995 /* TagFamilies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E72E21F73055007F2995 /* TagFamilies.cpp */; };
+		3912E74F21F73056007F2995 /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E73021F73055007F2995 /* MathUtil.cpp */; };
+		3912E75021F73056007F2995 /* Refine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E73421F73055007F2995 /* Refine.cpp */; };
+		3912E75121F73056007F2995 /* TagDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E73521F73055007F2995 /* TagDetector.cpp */; };
+		3912E75221F73056007F2995 /* GrayModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E73921F73055007F2995 /* GrayModel.cpp */; };
+		3912E75321F73056007F2995 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3912E73D21F73055007F2995 /* CMakeLists.txt */; };
+		3912E75421F73056007F2995 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 3912E73E21F73055007F2995 /* LICENSE */; };
+		3912E75521F73056007F2995 /* version_db.c in Sources */ = {isa = PBXBuildFile; fileRef = 3912E74321F73055007F2995 /* version_db.c */; };
+		3912E75621F73056007F2995 /* decode.c in Sources */ = {isa = PBXBuildFile; fileRef = 3912E74421F73055007F2995 /* decode.c */; };
+		3912E75721F73056007F2995 /* quirc.c in Sources */ = {isa = PBXBuildFile; fileRef = 3912E74521F73055007F2995 /* quirc.c */; };
+		3912E75821F73056007F2995 /* test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E74721F73056007F2995 /* test.cpp */; };
+		3912E75921F73056007F2995 /* qrcode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E74921F73056007F2995 /* qrcode.cpp */; };
+		3912E75D21F75F53007F2995 /* QRDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3912E75C21F75F53007F2995 /* QRDetectViewController.m */; };
+		3912E76121F75FAA007F2995 /* CCQRDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3912E76021F75FAA007F2995 /* CCQRDetector.mm */; };
 		3977EC3921F59DA2005654E1 /* qr_185.png in Resources */ = {isa = PBXBuildFile; fileRef = 3977EC3821F59DA2005654E1 /* qr_185.png */; };
 		3977EC4421F5B8BE005654E1 /* PhotoDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */; };
 		3977EC4B21F603F8005654E1 /* qr_30的副本.png in Resources */ = {isa = PBXBuildFile; fileRef = 3977EC4A21F603F7005654E1 /* qr_30的副本.png */; };
@@ -209,6 +228,41 @@
 
 /* Begin PBXFileReference section */
 		160B8C07E407C9DD2ACF0832 /* Pods-Demo-Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo-Pods.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Demo-Pods/Pods-Demo-Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		3912E72421F6F16B007F2995 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../../../../../../../../opencv/opencv2.framework; sourceTree = "<group>"; };
+		3912E72821F73055007F2995 /* Refine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Refine.h; sourceTree = "<group>"; };
+		3912E72921F73055007F2995 /* TagDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagDetector.h; sourceTree = "<group>"; };
+		3912E72A21F73055007F2995 /* UnionFindSimple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnionFindSimple.cpp; sourceTree = "<group>"; };
+		3912E72B21F73055007F2995 /* Geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Geometry.cpp; sourceTree = "<group>"; };
+		3912E72C21F73055007F2995 /* TagFamily.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TagFamily.cpp; sourceTree = "<group>"; };
+		3912E72D21F73055007F2995 /* DebugImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugImage.cpp; sourceTree = "<group>"; };
+		3912E72E21F73055007F2995 /* TagFamilies.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TagFamilies.cpp; sourceTree = "<group>"; };
+		3912E72F21F73055007F2995 /* AprilTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AprilTypes.h; sourceTree = "<group>"; };
+		3912E73021F73055007F2995 /* MathUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MathUtil.cpp; sourceTree = "<group>"; };
+		3912E73121F73055007F2995 /* GrayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrayModel.h; sourceTree = "<group>"; };
+		3912E73221F73055007F2995 /* DebugImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugImage.h; sourceTree = "<group>"; };
+		3912E73321F73055007F2995 /* TagFamily.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagFamily.h; sourceTree = "<group>"; };
+		3912E73421F73055007F2995 /* Refine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Refine.cpp; sourceTree = "<group>"; };
+		3912E73521F73055007F2995 /* TagDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TagDetector.cpp; sourceTree = "<group>"; };
+		3912E73621F73055007F2995 /* TagDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagDetection.h; sourceTree = "<group>"; };
+		3912E73721F73055007F2995 /* MathUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathUtil.h; sourceTree = "<group>"; };
+		3912E73821F73055007F2995 /* Profiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profiler.h; sourceTree = "<group>"; };
+		3912E73921F73055007F2995 /* GrayModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GrayModel.cpp; sourceTree = "<group>"; };
+		3912E73A21F73055007F2995 /* UnionFindSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnionFindSimple.h; sourceTree = "<group>"; };
+		3912E73B21F73055007F2995 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
+		3912E73D21F73055007F2995 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		3912E73E21F73055007F2995 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		3912E74021F73055007F2995 /* quirc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = quirc.h; sourceTree = "<group>"; };
+		3912E74121F73055007F2995 /* quirc_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = quirc_internal.h; sourceTree = "<group>"; };
+		3912E74321F73055007F2995 /* version_db.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = version_db.c; sourceTree = "<group>"; };
+		3912E74421F73055007F2995 /* decode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = decode.c; sourceTree = "<group>"; };
+		3912E74521F73055007F2995 /* quirc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = quirc.c; sourceTree = "<group>"; };
+		3912E74721F73056007F2995 /* test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test.cpp; sourceTree = "<group>"; };
+		3912E74821F73056007F2995 /* qrcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = qrcode.h; sourceTree = "<group>"; };
+		3912E74921F73056007F2995 /* qrcode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = qrcode.cpp; sourceTree = "<group>"; };
+		3912E75B21F75F53007F2995 /* QRDetectViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QRDetectViewController.h; sourceTree = "<group>"; };
+		3912E75C21F75F53007F2995 /* QRDetectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QRDetectViewController.m; sourceTree = "<group>"; };
+		3912E75F21F75FAA007F2995 /* CCQRDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCQRDetector.h; sourceTree = "<group>"; };
+		3912E76021F75FAA007F2995 /* CCQRDetector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CCQRDetector.mm; sourceTree = "<group>"; };
 		3977EC3821F59DA2005654E1 /* qr_185.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_185.png; sourceTree = "<group>"; };
 		3977EC4221F5B8BE005654E1 /* PhotoDetectViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoDetectViewController.h; sourceTree = "<group>"; };
 		3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoDetectViewController.m; sourceTree = "<group>"; };
@@ -422,6 +476,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3912E72521F6F16B007F2995 /* opencv2.framework in Frameworks */,
 				1EE78A577A8DD71FA91617CA /* libPods-Demo-Pods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -429,6 +484,101 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3912E72321F6EFE3007F2995 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				3912E72621F72F70007F2995 /* qrcode-detetor */,
+				3912E72421F6F16B007F2995 /* opencv2.framework */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		3912E72621F72F70007F2995 /* qrcode-detetor */ = {
+			isa = PBXGroup;
+			children = (
+				3912E72721F73055007F2995 /* apriltag */,
+				3912E73C21F73055007F2995 /* quirc */,
+				3912E74621F73056007F2995 /* cvqrcode */,
+			);
+			path = "qrcode-detetor";
+			sourceTree = "<group>";
+		};
+		3912E72721F73055007F2995 /* apriltag */ = {
+			isa = PBXGroup;
+			children = (
+				3912E72F21F73055007F2995 /* AprilTypes.h */,
+				3912E72D21F73055007F2995 /* DebugImage.cpp */,
+				3912E73221F73055007F2995 /* DebugImage.h */,
+				3912E72B21F73055007F2995 /* Geometry.cpp */,
+				3912E73B21F73055007F2995 /* Geometry.h */,
+				3912E73921F73055007F2995 /* GrayModel.cpp */,
+				3912E73121F73055007F2995 /* GrayModel.h */,
+				3912E73021F73055007F2995 /* MathUtil.cpp */,
+				3912E73721F73055007F2995 /* MathUtil.h */,
+				3912E73821F73055007F2995 /* Profiler.h */,
+				3912E73421F73055007F2995 /* Refine.cpp */,
+				3912E72821F73055007F2995 /* Refine.h */,
+				3912E73621F73055007F2995 /* TagDetection.h */,
+				3912E73521F73055007F2995 /* TagDetector.cpp */,
+				3912E72921F73055007F2995 /* TagDetector.h */,
+				3912E72E21F73055007F2995 /* TagFamilies.cpp */,
+				3912E72C21F73055007F2995 /* TagFamily.cpp */,
+				3912E73321F73055007F2995 /* TagFamily.h */,
+				3912E72A21F73055007F2995 /* UnionFindSimple.cpp */,
+				3912E73A21F73055007F2995 /* UnionFindSimple.h */,
+			);
+			path = apriltag;
+			sourceTree = "<group>";
+		};
+		3912E73C21F73055007F2995 /* quirc */ = {
+			isa = PBXGroup;
+			children = (
+				3912E73D21F73055007F2995 /* CMakeLists.txt */,
+				3912E73E21F73055007F2995 /* LICENSE */,
+				3912E73F21F73055007F2995 /* include */,
+				3912E74221F73055007F2995 /* src */,
+			);
+			path = quirc;
+			sourceTree = "<group>";
+		};
+		3912E73F21F73055007F2995 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				3912E74021F73055007F2995 /* quirc.h */,
+				3912E74121F73055007F2995 /* quirc_internal.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		3912E74221F73055007F2995 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				3912E74321F73055007F2995 /* version_db.c */,
+				3912E74421F73055007F2995 /* decode.c */,
+				3912E74521F73055007F2995 /* quirc.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		3912E74621F73056007F2995 /* cvqrcode */ = {
+			isa = PBXGroup;
+			children = (
+				3912E74721F73056007F2995 /* test.cpp */,
+				3912E74821F73056007F2995 /* qrcode.h */,
+				3912E74921F73056007F2995 /* qrcode.cpp */,
+			);
+			path = cvqrcode;
+			sourceTree = "<group>";
+		};
+		3912E75E21F75F8E007F2995 /* CCQRDetector */ = {
+			isa = PBXGroup;
+			children = (
+				3912E75F21F75FAA007F2995 /* CCQRDetector.h */,
+				3912E76021F75FAA007F2995 /* CCQRDetector.mm */,
+			);
+			path = CCQRDetector;
+			sourceTree = "<group>";
+		};
 		39E9A2A621F17FFE00CF8446 = {
 			isa = PBXGroup;
 			children = (
@@ -450,10 +600,12 @@
 		39E9A2B121F17FFF00CF8446 /* Demo-Pods */ = {
 			isa = PBXGroup;
 			children = (
+				3912E72321F6EFE3007F2995 /* lib */,
 				39E9A2B221F17FFF00CF8446 /* AppDelegate.h */,
 				39E9A2B321F17FFF00CF8446 /* AppDelegate.m */,
 				39E9A2B521F17FFF00CF8446 /* ViewController.h */,
 				39E9A2B621F17FFF00CF8446 /* ViewController.m */,
+				3912E75E21F75F8E007F2995 /* CCQRDetector */,
 				39E9A5B421F1C3DE00CF8446 /* ViewControllers */,
 				39E9A2B821F17FFF00CF8446 /* Main.storyboard */,
 				39E9A2BE21F1800000CF8446 /* Assets.xcassets */,
@@ -669,6 +821,8 @@
 				39E9A5BF21F1FDC700CF8446 /* SingleImageViewController.m */,
 				3977EC4221F5B8BE005654E1 /* PhotoDetectViewController.h */,
 				3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */,
+				3912E75B21F75F53007F2995 /* QRDetectViewController.h */,
+				3912E75C21F75F53007F2995 /* QRDetectViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -886,6 +1040,7 @@
 				39E9A57721F1B5E000CF8446 /* qr_129.png in Resources */,
 				39E9A59E21F1B5E000CF8446 /* qr_172.png in Resources */,
 				39E9A52D21F1B5E000CF8446 /* qr_50.png in Resources */,
+				3912E75421F73056007F2995 /* LICENSE in Resources */,
 				39E9A58621F1B5E000CF8446 /* qr_113.png in Resources */,
 				39E9A57521F1B5E000CF8446 /* qr_101.png in Resources */,
 				39E9A51821F1B5E000CF8446 /* qr_143.png in Resources */,
@@ -922,6 +1077,7 @@
 				39E9A56821F1B5E000CF8446 /* qr_17.png in Resources */,
 				39E9A57A21F1B5E000CF8446 /* qr_139.png in Resources */,
 				39E9A55521F1B5E000CF8446 /* qr_6.png in Resources */,
+				3912E75321F73056007F2995 /* CMakeLists.txt in Resources */,
 				39E9A56921F1B5E000CF8446 /* qr_8.png in Resources */,
 				39E9A59821F1B5E000CF8446 /* qr_63.png in Resources */,
 				39E9A54421F1B5E000CF8446 /* qr_121.png in Resources */,
@@ -973,13 +1129,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3912E75721F73056007F2995 /* quirc.c in Sources */,
+				3912E75921F73056007F2995 /* qrcode.cpp in Sources */,
+				3912E75521F73056007F2995 /* version_db.c in Sources */,
 				39E9A5C021F1FDC700CF8446 /* SingleImageViewController.m in Sources */,
+				3912E76121F75FAA007F2995 /* CCQRDetector.mm in Sources */,
+				3912E74F21F73056007F2995 /* MathUtil.cpp in Sources */,
+				3912E74A21F73056007F2995 /* UnionFindSimple.cpp in Sources */,
+				3912E75821F73056007F2995 /* test.cpp in Sources */,
 				39E9A2B721F17FFF00CF8446 /* ViewController.m in Sources */,
+				3912E74E21F73056007F2995 /* TagFamilies.cpp in Sources */,
 				39E9A2BD21F17FFF00CF8446 /* Demo_Pods.xcdatamodeld in Sources */,
+				3912E75121F73056007F2995 /* TagDetector.cpp in Sources */,
+				3912E75D21F75F53007F2995 /* QRDetectViewController.m in Sources */,
+				3912E74C21F73056007F2995 /* TagFamily.cpp in Sources */,
+				3912E74D21F73056007F2995 /* DebugImage.cpp in Sources */,
+				3912E75021F73056007F2995 /* Refine.cpp in Sources */,
 				39E9A2C521F1800000CF8446 /* main.m in Sources */,
 				3977EC4421F5B8BE005654E1 /* PhotoDetectViewController.m in Sources */,
+				3912E74B21F73056007F2995 /* Geometry.cpp in Sources */,
+				3912E75621F73056007F2995 /* decode.c in Sources */,
 				39E9A5B821F1C3F500CF8446 /* BenchmarkViewController.m in Sources */,
 				39E9A2B421F17FFF00CF8446 /* AppDelegate.m in Sources */,
+				3912E75221F73056007F2995 /* GrayModel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1124,6 +1296,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K676VLYVA7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/..\"",
+					/opencv,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/opencv/opencv2.framework/Headers,
+				);
 				INFOPLIST_FILE = "Demo-Pods/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1142,6 +1323,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K676VLYVA7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/..\"",
+					/opencv,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/opencv/opencv2.framework/Headers,
+				);
 				INFOPLIST_FILE = "Demo-Pods/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

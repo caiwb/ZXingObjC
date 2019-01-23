@@ -17,8 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIImage *)cropQRCodeFromImage:(UIImage *)image;
 
-- (BOOL)detectQRCodeFromImage:(UIImage *)image;
-
 @end
 
 NS_ASSUME_NONNULL_END

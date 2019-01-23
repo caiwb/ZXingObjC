@@ -27,6 +27,7 @@
 		3912E75921F73056007F2995 /* qrcode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E74921F73056007F2995 /* qrcode.cpp */; };
 		3912E75D21F75F53007F2995 /* QRDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3912E75C21F75F53007F2995 /* QRDetectViewController.m */; };
 		3912E76121F75FAA007F2995 /* CCQRDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3912E76021F75FAA007F2995 /* CCQRDetector.mm */; };
+		3912E76621F8A8E9007F2995 /* UIView+Tips.m in Sources */ = {isa = PBXBuildFile; fileRef = 3912E76521F8A8E9007F2995 /* UIView+Tips.m */; };
 		3977EC3921F59DA2005654E1 /* qr_185.png in Resources */ = {isa = PBXBuildFile; fileRef = 3977EC3821F59DA2005654E1 /* qr_185.png */; };
 		3977EC4421F5B8BE005654E1 /* PhotoDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */; };
 		3977EC4B21F603F8005654E1 /* qr_30的副本.png in Resources */ = {isa = PBXBuildFile; fileRef = 3977EC4A21F603F7005654E1 /* qr_30的副本.png */; };
@@ -263,6 +264,8 @@
 		3912E75C21F75F53007F2995 /* QRDetectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QRDetectViewController.m; sourceTree = "<group>"; };
 		3912E75F21F75FAA007F2995 /* CCQRDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCQRDetector.h; sourceTree = "<group>"; };
 		3912E76021F75FAA007F2995 /* CCQRDetector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CCQRDetector.mm; sourceTree = "<group>"; };
+		3912E76421F8A8E9007F2995 /* UIView+Tips.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Tips.h"; sourceTree = "<group>"; };
+		3912E76521F8A8E9007F2995 /* UIView+Tips.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Tips.m"; sourceTree = "<group>"; };
 		3977EC3821F59DA2005654E1 /* qr_185.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_185.png; sourceTree = "<group>"; };
 		3977EC4221F5B8BE005654E1 /* PhotoDetectViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoDetectViewController.h; sourceTree = "<group>"; };
 		3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoDetectViewController.m; sourceTree = "<group>"; };
@@ -487,6 +490,7 @@
 		3912E72321F6EFE3007F2995 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				3912E76321F8A6C1007F2995 /* utils */,
 				3912E72621F72F70007F2995 /* qrcode-detetor */,
 				3912E72421F6F16B007F2995 /* opencv2.framework */,
 			);
@@ -577,6 +581,15 @@
 				3912E76021F75FAA007F2995 /* CCQRDetector.mm */,
 			);
 			path = CCQRDetector;
+			sourceTree = "<group>";
+		};
+		3912E76321F8A6C1007F2995 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				3912E76421F8A8E9007F2995 /* UIView+Tips.h */,
+				3912E76521F8A8E9007F2995 /* UIView+Tips.m */,
+			);
+			path = utils;
 			sourceTree = "<group>";
 		};
 		39E9A2A621F17FFE00CF8446 = {
@@ -1141,6 +1154,7 @@
 				3912E74E21F73056007F2995 /* TagFamilies.cpp in Sources */,
 				39E9A2BD21F17FFF00CF8446 /* Demo_Pods.xcdatamodeld in Sources */,
 				3912E75121F73056007F2995 /* TagDetector.cpp in Sources */,
+				3912E76621F8A8E9007F2995 /* UIView+Tips.m in Sources */,
 				3912E75D21F75F53007F2995 /* QRDetectViewController.m in Sources */,
 				3912E74C21F73056007F2995 /* TagFamily.cpp in Sources */,
 				3912E74D21F73056007F2995 /* DebugImage.cpp in Sources */,

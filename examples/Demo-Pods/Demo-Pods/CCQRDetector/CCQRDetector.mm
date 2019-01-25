@@ -14,24 +14,33 @@
 #import "UIView+Tips.h"
 
 typedef NS_ENUM(NSInteger, CCQRDetectorProcessType) {
-    CCQRDetectorProcessType_FirstTry,
+    CCQRDetectorProcessTypeCommon = 0,
+    CCQRDetectorProcessTypeHasDetect
+};
+
+typedef NS_ENUM(NSInteger, CCQRDetectorThresholdType) {
+    CCQRDetectorThresholdTypeCommon = 0,
+    CCQRDetectorThresholdTypeAdaptive
 };
 
 void    showDebugTips(id tips);
 double  angleWithSquarePoints(cv::Point pt1, cv::Point pt2, cv::Point pt0);
 bool    isGoalSquare(std::vector<cv::Point> points);
 
+//#define kBlockSizeInit 11
+//#define kDeltaInit 1
+//
+//#define kMaxBlockSize kBlockSizeInit
+//#define kMinDelta kDeltaInit
+
 #define kBlockSizeInit 11
 #define kDeltaInit 27
-
-#define kBlockSizeStep 4
-#define kDeltaStep 4
 
 #define kMaxBlockSize kBlockSizeInit
 #define kMinDelta -(kDeltaInit)
 
-//#define kMaxBlockSize 81
-//#define kMinDelta -25
+#define kBlockSizeStep 4
+#define kDeltaStep 4
 
 @interface CCQRDetector ()
 
@@ -42,6 +51,10 @@ bool    isGoalSquare(std::vector<cv::Point> points);
 @property (nonatomic, assign) CCQRDetectorProcessType processType;
 
 // threshold
+@property (nonatomic, assign) CCQRDetectorThresholdType thresholdType;
+
+@property (nonatomic, assign) int thresh;
+
 @property (nonatomic, assign) int thBlockSize;
 
 @property (nonatomic, assign) int thDelta;
@@ -51,7 +64,6 @@ bool    isGoalSquare(std::vector<cv::Point> points);
 @implementation CCQRDetector {
     cv::Mat _src;
     cv::Mat _gray;
-    std::vector<cv::Mat> _pendingMatrixs;
 }
 
 + (instancetype)detectQRCodeFromImage:(UIImage *)image delegate:(id <CCQRDetectorDelegate>)delegate {
@@ -77,8 +89,18 @@ bool    isGoalSquare(std::vector<cv::Point> points);
     UIImageToMat(image, src);
     _src = src.clone();
     cv::cvtColor(src, _gray, CV_BGR2GRAY);
+
+    self.processType = CCQRDetectorProcessTypeCommon;
+    self.thresholdType = CCQRDetectorThresholdTypeCommon;
     
-    self.processType = CCQRDetectorProcessType_FirstTry;
+    for (int thresh = -1; thresh < 255; thresh += 50) {
+        self.thresh = thresh;
+        if ([self processCvMat:_gray]) {
+            return;
+        }
+    }
+    
+    self.thresholdType = CCQRDetectorThresholdTypeAdaptive;
     
     for ( ; self.thBlockSize <= kMaxBlockSize; self.thBlockSize += kBlockSizeStep) {
         for ( ; self.thDelta >= kMinDelta; self.thDelta -= kDeltaStep) {
@@ -100,10 +122,17 @@ bool    isGoalSquare(std::vector<cv::Point> points);
     }
     
     cv::GaussianBlur(output, output, cv::Size(5, 5), cv::BORDER_CONSTANT);
-    cv::adaptiveThreshold(output, output, 255, CV_ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, self.thBlockSize, self.thDelta);
-    
+    if (self.thresholdType == CCQRDetectorThresholdTypeCommon) {
+        int type = self.thresh <= 0 ? cv::THRESH_OTSU : cv::THRESH_BINARY;
+        cv::threshold(output, output, self.thresh, 255, type);
+    }
+    else {
+        cv::adaptiveThreshold(output, output, 255, CV_ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, self.thBlockSize, self.thDelta);
+    }
+
     BOOL ret = [self checkCvMat:output];
     if (ret) {
+        output.release();
         return YES;
     }
     
@@ -114,7 +143,13 @@ bool    isGoalSquare(std::vector<cv::Point> points);
     cv::resize(output, scaled, size);
     ret = [self checkCvMat:scaled];
     if (ret) {
+        output.release();
         return YES;
+    }
+    else if (self.processType == CCQRDetectorProcessTypeHasDetect) {
+        // 如果已经找到二维码，但是解码失败，则不进入下一步，直接重试
+        output.release();
+        return NO;
     }
 
     cv::Canny(output, output, 50, 200);
@@ -129,8 +164,10 @@ bool    isGoalSquare(std::vector<cv::Point> points);
     // detect square
     ret = [self detectSquare:output contours:contours hierarchy:hierarchy];
     if (ret) {
+        output.release();
         return YES;
     }
+    output.release();
     return NO;
 }
 
@@ -152,13 +189,14 @@ bool    isGoalSquare(std::vector<cv::Point> points);
     
         cv::drawContours(debug, contours, static_cast<int>(i), cv::Scalar(255, 0, 0), 2, 8);
     
-        cv::Mat toCheck;
-        for (int i = 50; i <= 200; i += 50) {
-            if ([self checkCvMat:result]) {
+        cv::Mat toCheck = cv::Mat(result);
+        for (int i = -1; i < 255; i += 50) {
+            if ([self checkCvMat:toCheck]) {
                 return YES;
             }
             else {
-                cv::threshold(result, toCheck, 100, 255, cv::THRESH_OTSU);
+                int type = i <= 0 ? cv::THRESH_OTSU : cv::THRESH_BINARY;
+                cv::threshold(result, toCheck, i, 255, type);
             }
         }
     }
@@ -199,6 +237,7 @@ bool    isGoalSquare(std::vector<cv::Point> points);
     if ([self.delegate respondsToSelector:@selector(didDetectQRCode:fromImage:)]) {
         [self.delegate didDetectQRCode:self fromImage:image];
     }
+    self.processType = CCQRDetectorProcessTypeHasDetect;
     
 //    CGImageRef cgimage = [self rotateImage:img.CGImage degrees:rotateAngles.doubleValue];
     ZXQRCodeReader *reader = [[ZXQRCodeReader alloc] init];

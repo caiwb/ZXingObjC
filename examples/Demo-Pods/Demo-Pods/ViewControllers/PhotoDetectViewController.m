@@ -86,6 +86,11 @@
         return;
     }
     
+    UIImageView *imgv = [[UIImageView alloc] initWithImage:[UIImage imageWithCGImage:img]];
+    imgv.contentMode = UIViewContentModeScaleAspectFit;
+    imgv.frame = self.view.bounds;
+    [self.view addSubview:imgv];
+    
     ZXQRCodeReader *reader = [[ZXQRCodeReader alloc] init];
     ZXLuminanceSource *source = [[ZXCGImageLuminanceSource alloc] initWithCGImage:img];
     ZXBinaryBitmap *bitmap = [ZXBinaryBitmap binaryBitmapWithBinarizer:[ZXHybridBinarizer binarizerWithSource:source]];

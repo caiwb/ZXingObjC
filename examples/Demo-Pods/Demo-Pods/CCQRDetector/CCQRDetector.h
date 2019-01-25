@@ -2,21 +2,28 @@
 //  CCQRDetector.h
 //  Demo-Pods
 //
-//  Created by caiwb on 2019/1/22.
+//  Created by caiwb on 2019/1/24.
 //  Copyright © 2019 caiwb. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
+@class CCQRDetector;
 
-@interface CCQRDetector : NSObject
+@protocol CCQRDetectorDelegate <NSObject>
 
-+ (instancetype)detector;
+@optional
 
-- (UIImage *)cropQRCodeFromImage:(UIImage *)image;
+- (void)didDetectQRCode:(CCQRDetector *)detector fromImage:(UIImage *)image;
+
+- (void)didDecodeQRCode:(CCQRDetector *)detector resultContent:(NSString *)content;
 
 @end
 
-NS_ASSUME_NONNULL_END
+@interface CCQRDetector : NSObject
+
++ (instancetype)detectQRCodeFromImage:(UIImage *)image delegate:(id <CCQRDetectorDelegate>)delegate;
+
+@end
+

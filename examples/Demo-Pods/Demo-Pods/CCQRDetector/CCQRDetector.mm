@@ -2,209 +2,281 @@
 //  CCQRDetector.m
 //  Demo-Pods
 //
-//  Created by caiwb on 2019/1/22.
+//  Created by caiwb on 2019/1/24.
 //  Copyright © 2019 caiwb. All rights reserved.
 //
 
 #import <opencv2/opencv.hpp>
-#import "CCQRDetector.h"
 #import "imgcodecs/ios.h"
+
+#import "CCQRDetector.h"
 #import "ZXingObjCQRCode.h"
 #import "UIView+Tips.h"
 
-//#define QRDebugMode
+typedef NS_ENUM(NSInteger, CCQRDetectorProcessType) {
+    CCQRDetectorProcessType_FirstTry,
+};
 
-#define kMaxTryCount 20
+void    showDebugTips(id tips);
+double  angleWithSquarePoints(cv::Point pt1, cv::Point pt2, cv::Point pt0);
+bool    isGoalSquare(std::vector<cv::Point> points);
+
+#define kBlockSizeInit 11
+#define kDeltaInit 27
+
+#define kBlockSizeStep 4
+#define kDeltaStep 4
+
+#define kMaxBlockSize kBlockSizeInit
+#define kMinDelta -(kDeltaInit)
+
+//#define kMaxBlockSize 81
+//#define kMinDelta -25
 
 @interface CCQRDetector ()
 
-@property (nonatomic, assign) NSInteger retryCount;
+@property (nonatomic, assign) id<CCQRDetectorDelegate> delegate;
 
-@property (nonatomic, strong) NSArray *similarArray;
+@property (nonatomic, strong) UIImage *srcImage;
+
+@property (nonatomic, assign) CCQRDetectorProcessType processType;
+
+// threshold
+@property (nonatomic, assign) int thBlockSize;
+
+@property (nonatomic, assign) int thDelta;
 
 @end
 
-@implementation CCQRDetector
-
-+ (instancetype)detector {
-    return [[CCQRDetector alloc] init];
+@implementation CCQRDetector {
+    cv::Mat _src;
+    cv::Mat _gray;
+    std::vector<cv::Mat> _pendingMatrixs;
 }
 
-double angleWithSquarePoints(cv::Point pt1, cv::Point pt2, cv::Point pt0);
-bool isSquare(std::vector<cv::Point> points);
-
-// 将二维码剪裁出来
-- (std::vector<cv::Mat>)cropQRCodeFrameFromImage:(cv::Mat)src {
-    cv::Mat srcOrigin = src.clone();
-    cv::Mat output, resultAll;
-    std::vector<cv::Mat> results;
++ (instancetype)detectQRCodeFromImage:(UIImage *)image delegate:(id <CCQRDetectorDelegate>)delegate {
+    CCQRDetector *detector = [[CCQRDetector alloc] init];
+    detector.delegate = delegate;
     
-    cv::cvtColor(src, output, CV_BGR2GRAY);
-    cv::threshold(output, output, 10, 255, cv::THRESH_OTSU);
-//    cv::adaptiveThreshold(output, output, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY, 83, 2);
+    // threshold
+    detector.thBlockSize = kBlockSizeInit;
+    detector.thDelta = kDeltaInit;
     
-    resultAll = src.clone();
-    cv::Mat resultAllScaled;
-    double scale = 256.f / std::min(resultAll.rows, resultAll.cols);
-    cv::Size size = cv::Size(resultAll.cols * scale, resultAll.rows * scale);
-    cv::resize(resultAll, resultAllScaled, size);
-#ifndef QRDebugMode
-    results.push_back(resultAllScaled);
-#endif
-    
-    cv::GaussianBlur(output, output, cv::Size(5, 5), cv::BORDER_CONSTANT);
-    cv::Canny(output, output, 100, 200);
-    
-    std::vector<std::vector<cv::Point>> contours;
-    std::vector<cv::Vec4i> hierarchy;
-    
-    cv::findContours(output, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-
-#ifdef QRDebugMode
-    resultAll = cv::Mat::zeros(src.size(), CV_8UC3);
-#endif
-    for (size_t i = 0; i < contours.size(); i ++) {
-        if (!isSquare(contours[i])) {
-            continue;
-        }
-#ifndef QRDebugMode
-        cv::Rect rect = cv::boundingRect(contours[i]);
-        cv::Mat result = resultAll(rect);
-        int minLine = std::min(result.rows, result.cols);
-
-        double scale = 256.f / minLine;
-        cv::Size size = cv::Size(result.cols * scale, result.rows * scale);
-        cv::resize(result, result, size);
-
-        results.push_back(result);
-    }
-#else
-        cv::drawContours(resultAll, contours, static_cast<int>(i), cv::Scalar(255, 0, 0), 2, 8);
-    }
-    results.push_back(resultAll);
-#endif
-
-    sort(results.begin(), results.end(), [](const cv::Mat& m1, const cv::Mat& m2) {return m1.rows * m1.cols > m2.rows * m2.cols;});
-    return results;
+    [detector detectQRCodeFromImage:image];
+    return detector;
 }
 
-- (BOOL)detectQRCodeFromImage:(UIImage *)image {
-    // detect src image
-    NSError *error;
-    BOOL result;
-    ZXLuminanceSource *source = [[ZXCGImageLuminanceSource alloc] initWithCGImage:image.CGImage];
-    ZXBinaryBitmap *bitmap = [ZXBinaryBitmap binaryBitmapWithBinarizer:[ZXHybridBinarizer binarizerWithSource:source]];
-    ZXBitMatrix *mat = [bitmap blackMatrixWithError:&error];
-    
-    ZXDecodeHints *hint = [ZXDecodeHints hints];
-    hint.tryHarder = YES;
-    ZXDecodeHints *pureHint = [hint copy];
-    pureHint.pureBarcode = YES;
-    
-    ZXQRCodeDetector *zxDetector = [[ZXQRCodeDetector alloc] initWithImage:mat];
-    result = [zxDetector detect:hint error:&error];
-    if (!result) {
-        result = [zxDetector detect:pureHint error:&error];
-    }
-    
-    return result;
-}
+#pragma mark - CCQRDetector
 
-// 可能是QRCode
-- (BOOL)isSimilarToQRCode:(UIImage *)image {
+- (void)detectQRCodeFromImage:(UIImage *)image {
+    if ([self detectQRCodeByZXingFromImage:image]) {
+        return;
+    }
+    // 进入图像预处理流程
     cv::Mat src;
     UIImageToMat(image, src);
+    _src = src.clone();
+    cv::cvtColor(src, _gray, CV_BGR2GRAY);
+    
+    self.processType = CCQRDetectorProcessType_FirstTry;
+    
+    for ( ; self.thBlockSize <= kMaxBlockSize; self.thBlockSize += kBlockSizeStep) {
+        for ( ; self.thDelta >= kMinDelta; self.thDelta -= kDeltaStep) {
+            if ([self processCvMat:_gray]) {
+                return;
+            }
+        }
+    }
+    NSLog(@"CCQRDetector Failed");
+}
+
+- (BOOL)processCvMat:(cv::Mat)src {
     cv::Mat output;
+    if (src.type() != CV_8UC1) {
+        cv::cvtColor(src, output, CV_BGR2GRAY);
+    }
+    else {
+        output = src.clone();
+    }
     
-    cv::cvtColor(src, output, CV_BGR2GRAY);
-//    cv::threshold(output, output, 10, 255, cv::THRESH_OTSU);
-//    cv::adaptiveThreshold(output, output, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY, 83, 2);
-    
-    threshold(output, output, 112, 255, cv::THRESH_BINARY);
     cv::GaussianBlur(output, output, cv::Size(5, 5), cv::BORDER_CONSTANT);
-    cv::Canny(output, output, 100, 200);
+    cv::adaptiveThreshold(output, output, 255, CV_ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, self.thBlockSize, self.thDelta);
     
+    BOOL ret = [self checkCvMat:output];
+    if (ret) {
+        return YES;
+    }
+    
+    // scale to 265
+    cv::Mat scaled;
+    double scale = 256.f / std::min(output.rows, output.cols);
+    cv::Size size = cv::Size(output.cols * scale, output.rows * scale);
+    cv::resize(output, scaled, size);
+    ret = [self checkCvMat:scaled];
+    if (ret) {
+        return YES;
+    }
+
+    cv::Canny(output, output, 50, 200);
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
     
     cv::findContours(output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_NONE, cv::Point(0, 0));
-//    output = cv::Mat::zeros(src.size(), CV_8UC3);
+
+    // todo: detect pattern
+    //
     
-    int count = 0;
-    for (size_t t = 0; t < contours.size(); t ++) {
-//        cv::drawContours(output, contours, static_cast<int>(t), CV_RGB(255, 255, 255), 1, 8);
-        size_t k = t;
-        int c = 0;
-        std::vector<size_t> indexs;
-        while (hierarchy[k][2] != -1) {
-            indexs.push_back(k);
-            k = hierarchy[k][2];
-            c ++;
-        }
-        if (c >= 5) {
-            count ++;
-        }
-    }
-    UIImage *result = MatToUIImage(output);
-    if (fabs(result.size.width - result.size.height) < 100) {
-        [KEY_WINDOW showViewHUD:[[UIImageView alloc] initWithImage:result] duration:10];
-    }
-    
-    if (count >= 3) {
+    // detect square
+    ret = [self detectSquare:output contours:contours hierarchy:hierarchy];
+    if (ret) {
         return YES;
+    }
+    return NO;
+}
+
+- (BOOL)detectSquare:(cv::Mat)src contours:(std::vector<std::vector<cv::Point>>)contours hierarchy:(std::vector<cv::Vec4i>)hierarchy {
+    cv::Mat output = src.clone();;
+    cv::Mat debug = cv::Mat::zeros(src.size(), CV_8UC3);
+
+    for (size_t i = 0; i < contours.size(); i ++) {
+        if (!isGoalSquare(contours[i])) {
+            continue;
+        }
+        cv::Rect rect = cv::boundingRect(contours[i]);
+        cv::Mat result = _gray(rect);
+        int minLine = std::min(result.rows, result.cols);
+        
+        double scale = 256.f / minLine;
+        cv::Size size = cv::Size(result.cols * scale, result.rows * scale);
+        cv::resize(result, result, size);
+    
+        cv::drawContours(debug, contours, static_cast<int>(i), cv::Scalar(255, 0, 0), 2, 8);
+    
+        cv::Mat toCheck;
+        for (int i = 50; i <= 200; i += 50) {
+            if ([self checkCvMat:result]) {
+                return YES;
+            }
+            else {
+                cv::threshold(result, toCheck, 100, 255, cv::THRESH_OTSU);
+            }
+        }
     }
     
     return NO;
 }
 
-- (UIImage *)loopProcessImage:(cv::Mat)src {
-    std::vector<cv::Mat> results = [self cropQRCodeFrameFromImage:src];
-    
-    // 可能是qrcode
-    NSMutableArray *similarArray = [[NSMutableArray alloc] initWithCapacity:results.size()];;
-    
-    for (int i = 0; i < results.size(); i ++) {
-        cv::Mat result = results[i];
-        UIImage *output = MatToUIImage(result);
-#ifdef QRDebugMode
-        return output;
-#endif
-        if ([self detectQRCodeFromImage:output]) {
-            NSLog(@"CCQRDetector: detect success");
-//            return output;
-        }
-        if (!self.similarArray.count && [self isSimilarToQRCode:output]) {
-            NSLog(@"CCQRDetector: is similar to qrcode");
-            [similarArray addObject:output];
-        }
-    }
-    
-    if (!similarArray.count) {
-        // 相似二维码的正方形都没找到，方案：
-        // 1、进行先膨胀再腐蚀处理
-        // 2、可能旋转角度过大
-        
-    }
-    else {
-        // 已找到，尝试调整二值化阈值
-//        self.similarArray = [similarArray copy];
-        
-    }
-    
-    NSLog(@"CCQRDetector: detect failed");
-    return nil;
+#pragma mark - result
+
+- (BOOL)checkCvMat:(cv::Mat)matrix {
+    UIImage *image = MatToUIImage(matrix);
+    BOOL ret = [self detectQRCodeByZXingFromImage:image];
+    return ret;
 }
 
-- (UIImage *)cropQRCodeFromImage:(UIImage *)image {
-    if (![self detectQRCodeFromImage:image]) {
-        cv::Mat src;
-        UIImageToMat(image, src);
-        return [self loopProcessImage:src];
+#pragma mark - detector by zxing
+
+- (BOOL)detectQRCodeByZXingFromImage:(UIImage *)image {
+    NSError *error;
+    
+    ZXLuminanceSource *source = [[ZXCGImageLuminanceSource alloc] initWithCGImage:image.CGImage];
+    ZXBinaryBitmap *bitmap = [ZXBinaryBitmap binaryBitmapWithBinarizer:[ZXHybridBinarizer binarizerWithSource:source]];
+    ZXBitMatrix *mat = [bitmap blackMatrixWithError:&error];
+    
+    ZXDecodeHints *hints = [ZXDecodeHints hints];
+    hints.tryHarder = YES;
+    ZXDecodeHints *pureHints = [hints copy];
+    pureHints.pureBarcode = YES;
+    
+    ZXQRCodeDetector *zxDetector = [[ZXQRCodeDetector alloc] initWithImage:mat];
+    ZXDetectorResult *detectResult = [zxDetector detect:hints error:&error];
+    if (!detectResult) {
+        detectResult = [zxDetector detect:pureHints error:&error];
     }
-    return image;
+    if (!detectResult) {
+        return NO;
+    }
+    if ([self.delegate respondsToSelector:@selector(didDetectQRCode:fromImage:)]) {
+        [self.delegate didDetectQRCode:self fromImage:image];
+    }
+    
+//    CGImageRef cgimage = [self rotateImage:img.CGImage degrees:rotateAngles.doubleValue];
+    ZXQRCodeReader *reader = [[ZXQRCodeReader alloc] init];
+    ZXResult *decodeResult = [reader decode:bitmap hints:hints error:&error];
+    if (!decodeResult) {
+        decodeResult = [reader decode:bitmap hints:pureHints error:&error];
+    }
+    NSString *contents = decodeResult.text;
+
+    if (!decodeResult) {
+        CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{CIDetectorAccuracy : CIDetectorAccuracyHigh}];
+        CIQRCodeFeature *features = (CIQRCodeFeature *)[[detector featuresInImage:[CIImage imageWithCGImage:image.CGImage]] firstObject];
+        contents = features.messageString;
+    }
+    
+    if (contents.length) {
+        if ([self.delegate respondsToSelector:@selector(didDecodeQRCode:resultContent:)]) {
+            [self.delegate didDecodeQRCode:self resultContent:contents];
+        }
+        return YES;
+    }
+    NSLog(@"CCQRDetector Failed: %@", error);
+    return NO;
 }
 
-// 计算三点形成的角度
+
+/*
+ - (BOOL)detectQRCodePattern:(cv::Mat)src contours:(std::vector<std::vector<cv::Point>>)contours
+ hierarchy:(std::vector<cv::Vec4i>)hierarchy shouldPending:(BOOL)shouldPending
+ patternContours:(std::vector<size_t> &)patternContours {
+ cv::Mat output = src.clone();;
+ cv::Mat debug = cv::Mat::zeros(src.size(), CV_8UC3);
+ 
+ std::vector<std::vector<size_t>> allDectedContours;
+ std::vector<size_t> allDectedIndexs;
+ 
+ //    showDebugTips(MatToUIImage(output));
+ 
+ for (size_t t = 0; t < contours.size(); t ++) {
+ if (std::find(allDectedIndexs.begin(), allDectedIndexs.end(), t) != allDectedIndexs.end()) {
+ // contains
+ continue;
+ }
+ 
+ cv::drawContours(debug, contours, static_cast<int>(t), CV_RGB(255, 255, 255), 1, 8);
+ size_t k = t;
+ int c = 0;
+ 
+ std::vector<size_t> dectedContour;
+ while (hierarchy[k][2] != -1) {
+ dectedContour.push_back(k);
+ k = hierarchy[k][2];
+ c ++;
+ }
+ if (c >= 5) {
+ allDectedContours.push_back(dectedContour);
+ patternContours.push_back(dectedContour[0]);
+ allDectedIndexs.insert(allDectedIndexs.end(), dectedContour.begin(), dectedContour.end());
+ }
+ }
+ for (size_t t = 0; t < allDectedContours.size(); t ++) {
+ for (size_t m = 0; m < allDectedContours[t].size(); m ++) {
+ cv::drawContours(debug, contours, static_cast<int>(allDectedContours[t][m]), CV_RGB(0, 0, 255), 1, 8);
+ }
+ }
+ 
+ showDebugTips(MatToUIImage(debug));
+ if (patternContours.size() == 3) {
+ return YES;
+ }
+ 
+ return NO;
+ }*/
+
+@end
+
+#pragma mark - Utils
+
 double angleWithSquarePoints(cv::Point pt1, cv::Point pt2, cv::Point pt0) {
     double dx1 = pt1.x - pt0.x;
     double dy1 = pt1.y - pt0.y;
@@ -218,8 +290,7 @@ double angleWithSquarePoints(cv::Point pt1, cv::Point pt2, cv::Point pt0) {
     return (dx1 * dx2 + dy1 * dy2) / sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2) + 1e-10);
 }
 
-// 是否为正方形
-bool isSquare(std::vector<cv::Point> points) {
+bool isGoalSquare(std::vector<cv::Point> points) {
     cv::Mat target = cv::Mat(points);
     std::vector<cv::Point> approx;
     
@@ -251,4 +322,19 @@ bool isSquare(std::vector<cv::Point> points) {
     return false;
 }
 
-@end
+//#define DEBUG_WINDOW
+
+void showDebugTips(id tips) {
+#ifdef DEBUG_WINDOW
+    NSTimeInterval time = 2;
+    if ([tips isKindOfClass:[NSString class]]) {
+        [KEY_WINDOW showTextHUD:(NSString *)tips duration:time];
+    }
+    else if ([tips isKindOfClass:[UIView class]]) {
+        [KEY_WINDOW showViewHUD:(UIView *)tips duration:time];
+    }
+    else if ([tips isKindOfClass:[UIImage class]]) {
+        [KEY_WINDOW showViewHUD:[[UIImageView alloc] initWithImage:(UIImage *)tips] duration:time];
+    }
+#endif
+}

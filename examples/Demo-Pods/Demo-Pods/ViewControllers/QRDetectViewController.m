@@ -8,8 +8,9 @@
 
 #import "QRDetectViewController.h"
 #import "CCQRDetector.h"
+#import "UIView+Tips.h"
 
-@interface QRDetectViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface QRDetectViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, CCQRDetectorDelegate>
 
 @end
 
@@ -19,23 +20,31 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-//    UIImage *image = [UIImage imageNamed:@"screen_shot_1"];
-//    image = [[CCQRDetector detector] cropQRCodeFromImage:image];
-//
-//    UIImageView *imgv = [[UIImageView alloc] initWithImage:image];
-//    imgv.contentMode = UIViewContentModeScaleAspectFit;
-//    imgv.frame = self.view.bounds;
-//    [self.view addSubview:imgv];
+//    UIImage *image = [UIImage imageNamed:@"scene"];
+//    [CCQRDetector detectQRCodeFromImage:image delegate:self];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [super touchesEnded:touches withEvent:event];
     
     UIImagePickerController *controller = [[UIImagePickerController alloc] init];
-    controller.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     controller.allowsEditing = YES;
     controller.delegate = self;
     [self presentViewController:controller animated:YES completion:nil];
+}
+
+#pragma mark - CCQRDetectorDelegate
+
+- (void)didDetectQRCode:(CCQRDetector *)detector fromImage:(UIImage *)image {
+    UIImageView *imgv = [[UIImageView alloc] initWithImage:image];
+    imgv.contentMode = UIViewContentModeScaleAspectFit;
+    imgv.frame = self.view.bounds;
+    [self.view addSubview:imgv];
+}
+
+- (void)didDecodeQRCode:(CCQRDetector *)detector resultContent:(NSString *)content {
+    [KEY_WINDOW showTextHUD:content duration:2];
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -43,12 +52,10 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey, id> *)info {
     [picker dismissViewControllerAnimated:YES completion:nil];
     
+    [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
     UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    UIImage *qrcode = [[CCQRDetector detector] cropQRCodeFromImage:originalImage];
-    UIImageView *imgv = [[UIImageView alloc] initWithImage:qrcode];
-    imgv.contentMode = UIViewContentModeScaleAspectFit;
-    imgv.frame = self.view.bounds;
-    [self.view addSubview:imgv];
+    [CCQRDetector detectQRCodeFromImage:originalImage delegate:self];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {

@@ -10,6 +10,8 @@
 #include "opencv2/imgproc.hpp"
 #include "qrcode.h"
 
+#define HAVE_QUIRC
+
 #ifdef HAVE_QUIRC
 #include "quirc.h"
 #endif
@@ -23,7 +25,7 @@
 
 using namespace cv;
 
-namespace ccqr
+namespace qr
 {
 using std::vector;
 
@@ -829,7 +831,7 @@ bool QRCodeDetector::detect(InputArray in, OutputArray points) const
 
     QRDetect qrdet;
     qrdet.init(inarr, p->epsX, p->epsY);
-    if (!qrdet.localizationAT() && !qrdet.localization()) { return false; }
+    if (/*!qrdet.localizationAT() && */!qrdet.localization()) { return false; }
     if (!qrdet.computeTransformationPoints()) { return false; }
     vector<Point2f> pnts2f = qrdet.getTransformationPoints();
     Mat(pnts2f).convertTo(points, points.fixedType() ? points.type() : CV_32FC2);

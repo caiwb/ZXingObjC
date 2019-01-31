@@ -25,7 +25,6 @@
     
     [self addCell:@"Benchmark" class:@"BenchmarkViewController"];
     [self addCell:@"SingleImage" class:@"SingleImageViewController"];
-    [self addCell:@"PhotoDetect" class:@"PhotoDetectViewController"];
     [self addCell:@"QRDetect" class:@"QRDetectViewController"];
 }
 

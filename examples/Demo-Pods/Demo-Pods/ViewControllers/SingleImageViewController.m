@@ -23,7 +23,7 @@
     NSString *name = [NSString stringWithFormat:@"qr_%zd", i];
     UIImage *img = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:@"png"]] ?:
                    [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:@"jpg"]];
-    img = [UIImage imageNamed:@"living_room_clip"];
+    img = [UIImage imageNamed:@"living_room"];
     if (!img) {
         return;
     }

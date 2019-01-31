@@ -110,7 +110,7 @@ typedef struct CvHaarClassifierCascade CvHaarClassifierCascade;
 
 using namespace cv;
 
-namespace ccqr
+namespace qr
 {
 
 template<int N = 4>

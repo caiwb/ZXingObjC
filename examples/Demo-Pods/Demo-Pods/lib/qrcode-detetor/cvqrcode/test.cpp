@@ -13,7 +13,7 @@ int test_qrcode_cv(cv::Mat src) {
 }
 
 int test_qrcode(cv::Mat src) {
-    ccqr::QRCodeDetector qrdc;
+    qr::QRCodeDetector qrdc;
     std::string dec = qrdc.detectAndDecode(src);
     std::cout << "decode: " << dec << std::endl;
     return 0;

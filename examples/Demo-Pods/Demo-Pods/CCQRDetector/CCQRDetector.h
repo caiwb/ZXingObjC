@@ -17,7 +17,7 @@
 
 - (void)didDetectQRCode:(CCQRDetector *)detector fromImage:(UIImage *)image;
 
-- (void)didDecodeQRCode:(CCQRDetector *)detector resultContent:(NSString *)content;
+- (void)didDecodeQRCode:(CCQRDetector *)detector fromImage:(UIImage *)image resultContent:(NSString *)content;
 
 @end
 

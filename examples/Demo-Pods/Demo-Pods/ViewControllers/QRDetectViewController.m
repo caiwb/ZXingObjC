@@ -47,6 +47,16 @@
     [KEY_WINDOW showTextHUD:content duration:2];
 }
 
+- (void)didDecodeQRCode:(CCQRDetector *)detector fromImage:(UIImage *)image resultContent:(NSString *)content {
+    
+    UIImageView *imgv = [[UIImageView alloc] initWithImage:image];
+    imgv.contentMode = UIViewContentModeScaleAspectFit;
+    imgv.frame = self.view.bounds;
+    [self.view addSubview:imgv];
+    
+    [KEY_WINDOW showTextHUD:content duration:2];
+}
+
 #pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey, id> *)info {

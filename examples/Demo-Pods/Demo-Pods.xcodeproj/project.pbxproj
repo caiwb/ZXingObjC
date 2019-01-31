@@ -27,8 +27,8 @@
 		3912E75921F73056007F2995 /* qrcode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3912E74921F73056007F2995 /* qrcode.cpp */; };
 		3912E75D21F75F53007F2995 /* QRDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3912E75C21F75F53007F2995 /* QRDetectViewController.m */; };
 		3912E76621F8A8E9007F2995 /* UIView+Tips.m in Sources */ = {isa = PBXBuildFile; fileRef = 3912E76521F8A8E9007F2995 /* UIView+Tips.m */; };
+		3976AC2A22019F7300778C55 /* qrcode_detector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3976AC2822019F7300778C55 /* qrcode_detector.cpp */; };
 		3977EC3921F59DA2005654E1 /* qr_185.png in Resources */ = {isa = PBXBuildFile; fileRef = 3977EC3821F59DA2005654E1 /* qr_185.png */; };
-		3977EC4421F5B8BE005654E1 /* PhotoDetectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */; };
 		3977EC4B21F603F8005654E1 /* qr_30的副本.png in Resources */ = {isa = PBXBuildFile; fileRef = 3977EC4A21F603F7005654E1 /* qr_30的副本.png */; };
 		39E9A2B421F17FFF00CF8446 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 39E9A2B321F17FFF00CF8446 /* AppDelegate.m */; };
 		39E9A2B721F17FFF00CF8446 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39E9A2B621F17FFF00CF8446 /* ViewController.m */; };
@@ -264,9 +264,9 @@
 		3912E75C21F75F53007F2995 /* QRDetectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QRDetectViewController.m; sourceTree = "<group>"; };
 		3912E76421F8A8E9007F2995 /* UIView+Tips.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Tips.h"; sourceTree = "<group>"; };
 		3912E76521F8A8E9007F2995 /* UIView+Tips.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Tips.m"; sourceTree = "<group>"; };
+		3976AC2822019F7300778C55 /* qrcode_detector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = qrcode_detector.cpp; sourceTree = "<group>"; };
+		3976AC2922019F7300778C55 /* qrcode_detector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = qrcode_detector.hpp; sourceTree = "<group>"; };
 		3977EC3821F59DA2005654E1 /* qr_185.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr_185.png; sourceTree = "<group>"; };
-		3977EC4221F5B8BE005654E1 /* PhotoDetectViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoDetectViewController.h; sourceTree = "<group>"; };
-		3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoDetectViewController.m; sourceTree = "<group>"; };
 		3977EC4A21F603F7005654E1 /* qr_30的副本.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr_30的副本.png"; sourceTree = "<group>"; };
 		39E9A2AF21F17FFF00CF8446 /* Demo-Pods.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Demo-Pods.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		39E9A2B221F17FFF00CF8446 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -579,6 +579,8 @@
 			children = (
 				39F86F4621F99811003DDA9A /* CCQRDetector.h */,
 				39F86F4721F99811003DDA9A /* CCQRDetector.mm */,
+				3976AC2922019F7300778C55 /* qrcode_detector.hpp */,
+				3976AC2822019F7300778C55 /* qrcode_detector.cpp */,
 			);
 			path = CCQRDetector;
 			sourceTree = "<group>";
@@ -832,8 +834,6 @@
 				39E9A5B721F1C3F500CF8446 /* BenchmarkViewController.m */,
 				39E9A5BE21F1FDC700CF8446 /* SingleImageViewController.h */,
 				39E9A5BF21F1FDC700CF8446 /* SingleImageViewController.m */,
-				3977EC4221F5B8BE005654E1 /* PhotoDetectViewController.h */,
-				3977EC4321F5B8BE005654E1 /* PhotoDetectViewController.m */,
 				3912E75B21F75F53007F2995 /* QRDetectViewController.h */,
 				3912E75C21F75F53007F2995 /* QRDetectViewController.m */,
 			);
@@ -1153,6 +1153,7 @@
 				3912E74E21F73056007F2995 /* TagFamilies.cpp in Sources */,
 				39F86F4821F99811003DDA9A /* CCQRDetector.mm in Sources */,
 				39E9A2BD21F17FFF00CF8446 /* Demo_Pods.xcdatamodeld in Sources */,
+				3976AC2A22019F7300778C55 /* qrcode_detector.cpp in Sources */,
 				3912E75121F73056007F2995 /* TagDetector.cpp in Sources */,
 				3912E76621F8A8E9007F2995 /* UIView+Tips.m in Sources */,
 				3912E75D21F75F53007F2995 /* QRDetectViewController.m in Sources */,
@@ -1160,7 +1161,6 @@
 				3912E74D21F73056007F2995 /* DebugImage.cpp in Sources */,
 				3912E75021F73056007F2995 /* Refine.cpp in Sources */,
 				39E9A2C521F1800000CF8446 /* main.m in Sources */,
-				3977EC4421F5B8BE005654E1 /* PhotoDetectViewController.m in Sources */,
 				3912E74B21F73056007F2995 /* Geometry.cpp in Sources */,
 				3912E75621F73056007F2995 /* decode.c in Sources */,
 				39E9A5B821F1C3F500CF8446 /* BenchmarkViewController.m in Sources */,

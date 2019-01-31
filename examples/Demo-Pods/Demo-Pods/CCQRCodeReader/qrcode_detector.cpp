@@ -104,19 +104,20 @@ void QRDetector::detectQRCode(cv::Mat src) {
     
 bool QRDetector::tryDetectingQRCode(cv::Mat src) {
     bool ret = false;
-    cv::Mat output;
+    cv::Mat output = cv::Mat(src);
     
     // threshold
     if (m_thresh > 100) {
         cv::ThresholdTypes type = m_thresh > 255 ? cv::THRESH_OTSU : cv::THRESH_BINARY;
-        cv::threshold(src, output, m_thresh, 255, type);
+        cv::threshold(output, output, m_thresh, 255, type);
         ret = m_callback(output);
         if (ret) {
             return true;
         }
     }
     else {
-        cv::adaptiveThreshold(src, output, 255, CV_ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, m_blockSize, m_delta);
+        cv::GaussianBlur(output, output, cv::Size(5, 5), cv::BORDER_CONSTANT);
+        cv::adaptiveThreshold(output, output, 255, CV_ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, m_blockSize, m_delta);
     }
     
     

@@ -81,15 +81,14 @@
     }
     
     typeof(self) strongSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (contents.length) {
-            NSLog(@"suc");
-        }
-        if ([strongSelf.delegate respondsToSelector:@selector(didDecodeQRCode:fromImage:resultContent:)]) {
-            [strongSelf.delegate didDecodeQRCode:strongSelf fromImage:image resultContent:contents];
-        }
-    });
-    return contents.length;
+    if (contents.length) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([strongSelf.delegate respondsToSelector:@selector(didDecodeQRCode:fromImage:resultContent:)]) {
+                [strongSelf.delegate didDecodeQRCode:strongSelf fromImage:image resultContent:contents];
+            }
+        });
+    }
+    return contents.length > 0; 
 }
 
 @end

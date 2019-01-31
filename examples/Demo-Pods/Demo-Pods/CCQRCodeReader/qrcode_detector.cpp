@@ -74,7 +74,7 @@ void QRDetector::detectQRCode(cv::Mat src) {
     int cn = src.channels();
     if (cn == 3 || cn == 4) {
         cv::Mat gray;
-        cvtColor(src, gray, cv::COLOR_BGR2GRAY);
+        cvtColor(src, gray, CV_BGR2GRAY);
         m_gray = cv::Mat(gray);
     }
     else {
@@ -85,39 +85,44 @@ void QRDetector::detectQRCode(cv::Mat src) {
     if (m_callback(input)) {
         return;
     }
-    
-    for (m_thresh = 270; m_thresh > 100; m_thresh -= 50) {
-        if (tryDetectingQRCode(input)) {
-            return;
-        }
-    }
-    
-    m_blockSize = kBlockSizeInit;
-    m_delta = kDeltaInit;
-    
-    for (; m_delta >= kMinDelta; m_delta -= kDeltaStep) {
-        if (tryDetectingQRCode(input)) {
-            return;
-        }
+    cv::GaussianBlur(input, input, cv::Size(5, 5), cv::BORDER_CONSTANT);
+    m_thresh = 0;
+//    for (m_thresh = 270; m_thresh > 100; m_thresh -= 50) {
+//        if (tryDetectingQRCode(input)) {
+//            return;
+//        }
+//    }
+//
+//    m_blockSize = kBlockSizeInit;
+//    m_delta = kDeltaInit;
+//
+//    for (; m_delta >= kMinDelta; m_delta -= kDeltaStep) {
+//        if (tryDetectingQRCode(input)) {
+//            return;
+//        }
+//    }
+    m_blockSize = 11;
+    m_delta = 15;
+    if (tryDetectingQRCode(input)) {
+        return;
     }
 }
     
-bool QRDetector::tryDetectingQRCode(cv::Mat src) {
+bool QRDetector::tryDetectingQRCode(cv::Mat input) {
     bool ret = false;
-    cv::Mat output = cv::Mat(src);
+    cv::Mat output = cv::Mat(input);
     
     // threshold
     if (m_thresh > 100) {
         cv::ThresholdTypes type = m_thresh > 255 ? cv::THRESH_OTSU : cv::THRESH_BINARY;
         cv::threshold(output, output, m_thresh, 255, type);
-        ret = m_callback(output);
-        if (ret) {
-            return true;
-        }
     }
     else {
-        cv::GaussianBlur(output, output, cv::Size(5, 5), cv::BORDER_CONSTANT);
         cv::adaptiveThreshold(output, output, 255, CV_ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, m_blockSize, m_delta);
+    }
+    ret = m_callback(output);
+    if (ret) {
+        return true;
     }
     
     

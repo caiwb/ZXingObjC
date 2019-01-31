@@ -7,7 +7,7 @@
 //
 
 #import "QRDetectViewController.h"
-#import "CCQRDetector.h"
+#import "CCQRCodeReader.h"
 #import "UIView+Tips.h"
 
 @interface QRDetectViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, CCQRDetectorDelegate>
@@ -21,7 +21,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
 //    UIImage *image = [UIImage imageNamed:@"scene"];
-//    [CCQRDetector detectQRCodeFromImage:image delegate:self];
+//    [CCQRCodeReader detectQRCodeFromImage:image delegate:self];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -36,25 +36,29 @@
 
 #pragma mark - CCQRDetectorDelegate
 
-- (void)didDetectQRCode:(CCQRDetector *)detector fromImage:(UIImage *)image {
+- (void)didDetectQRCode:(CCQRCodeReader *)reader fromImage:(UIImage *)image {
     UIImageView *imgv = [[UIImageView alloc] initWithImage:image];
     imgv.contentMode = UIViewContentModeScaleAspectFit;
     imgv.frame = self.view.bounds;
     [self.view addSubview:imgv];
 }
 
-- (void)didDecodeQRCode:(CCQRDetector *)detector resultContent:(NSString *)content {
-    [KEY_WINDOW showTextHUD:content duration:2];
+- (void)didDecodeQRCode:(CCQRCodeReader *)reader resultContent:(NSString *)content {
+    if (content.length) {
+        [KEY_WINDOW showTextHUD:content duration:2];
+    }
 }
 
-- (void)didDecodeQRCode:(CCQRDetector *)detector fromImage:(UIImage *)image resultContent:(NSString *)content {
+- (void)didDecodeQRCode:(CCQRCodeReader *)reader fromImage:(UIImage *)image resultContent:(NSString *)content {
     
     UIImageView *imgv = [[UIImageView alloc] initWithImage:image];
     imgv.contentMode = UIViewContentModeScaleAspectFit;
     imgv.frame = self.view.bounds;
     [self.view addSubview:imgv];
     
-    [KEY_WINDOW showTextHUD:content duration:2];
+    if (content.length) {
+        [KEY_WINDOW showTextHUD:content duration:2];
+    }
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -65,7 +69,7 @@
     [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    [CCQRDetector detectQRCodeFromImage:originalImage delegate:self];
+    [CCQRCodeReader detectQRCodeFromImage:originalImage delegate:self];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {

@@ -75,14 +75,50 @@ void QRDetector::detectQRCode(cv::Mat src) {
     if (cn == 3 || cn == 4) {
         cv::Mat gray;
         cvtColor(src, gray, cv::COLOR_BGR2GRAY);
-        m_gray = gray;
+        m_gray = cv::Mat(gray);
+    }
+    else {
+        m_gray = cv::Mat(src);
     }
     
-    tryDetectingQRCode(m_gray);
+    cv::Mat input = m_gray.clone();
+    if (m_callback(input)) {
+        return;
+    }
+    
+    for (m_thresh = 270; m_thresh > 100; m_thresh -= 50) {
+        if (tryDetectingQRCode(input)) {
+            return;
+        }
+    }
+    
+    m_blockSize = kBlockSizeInit;
+    m_delta = kDeltaInit;
+    
+    for (; m_delta >= kMinDelta; m_delta -= kDeltaStep) {
+        if (tryDetectingQRCode(input)) {
+            return;
+        }
+    }
 }
     
 bool QRDetector::tryDetectingQRCode(cv::Mat src) {
-    bool ret = m_callback(src);
+    bool ret = false;
+    cv::Mat output;
+    
+    // threshold
+    if (m_thresh > 100) {
+        cv::ThresholdTypes type = m_thresh > 255 ? cv::THRESH_OTSU : cv::THRESH_BINARY;
+        cv::threshold(src, output, m_thresh, 255, type);
+        ret = m_callback(output);
+        if (ret) {
+            return true;
+        }
+    }
+    else {
+        cv::adaptiveThreshold(src, output, 255, CV_ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, m_blockSize, m_delta);
+    }
+    
     
     return ret;
 }

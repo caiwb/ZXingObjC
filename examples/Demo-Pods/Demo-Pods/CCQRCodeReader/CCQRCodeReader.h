@@ -1,5 +1,5 @@
 //
-//  CCQRDetector.h
+//  CCQRCodeReader.h
 //  Demo-Pods
 //
 //  Created by caiwb on 2019/1/24.
@@ -9,19 +9,19 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@class CCQRDetector;
+@class CCQRCodeReader;
 
 @protocol CCQRDetectorDelegate <NSObject>
 
 @optional
 
-- (void)didDetectQRCode:(CCQRDetector *)detector fromImage:(UIImage *)image;
+- (void)didDetectQRCode:(CCQRCodeReader *)reader fromImage:(UIImage *)image;
 
-- (void)didDecodeQRCode:(CCQRDetector *)detector fromImage:(UIImage *)image resultContent:(NSString *)content;
+- (void)didDecodeQRCode:(CCQRCodeReader *)reader fromImage:(UIImage *)image resultContent:(NSString *)content;
 
 @end
 
-@interface CCQRDetector : NSObject
+@interface CCQRCodeReader : NSObject
 
 + (instancetype)detectQRCodeFromImage:(UIImage *)image delegate:(id <CCQRDetectorDelegate>)delegate;
 

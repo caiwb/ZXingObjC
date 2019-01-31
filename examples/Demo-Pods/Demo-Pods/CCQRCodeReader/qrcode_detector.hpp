@@ -38,6 +38,12 @@ private:
     DetectQRSquareCallback m_callback;
     
     cv::Mat m_gray;
+    
+    /* processing conifg */
+    int m_thresh;
+    int m_blockSize;
+    int m_delta;
+    
 };
     
 } // namespace ccqr

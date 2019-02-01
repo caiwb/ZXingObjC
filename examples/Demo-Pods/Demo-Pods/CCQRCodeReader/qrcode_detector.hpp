@@ -44,8 +44,8 @@ private:
     int m_blockSize;
     int m_delta;
     
-};
     
+};
 } // namespace ccqr
 
 #endif /* qrcode_detector_hpp */

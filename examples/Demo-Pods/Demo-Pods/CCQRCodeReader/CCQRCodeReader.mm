@@ -11,6 +11,7 @@
 
 #import "CCQRCodeReader.h"
 #import "ZXingObjCQRCode.h"
+#import "UIImage+FixOrientation.h"
 
 @interface CCQRCodeReader ()
 
@@ -43,6 +44,7 @@
 
 - (void)_detectQRCodeFromImage:(UIImage *)image {
     cv::Mat src;
+    image = [image fixOrientation];
     UIImageToMat(image, src);
     
     typeof(self) strongSelf = self;
@@ -51,7 +53,6 @@
     };
     
     _detector.setCallback([callbackBlock](cv::Mat output) {
-        
         cv::Mat scaled;
         double scale = 256.f / std::min(output.rows, output.cols);
         cv::Size size = cv::Size(output.cols * scale, output.rows * scale);
@@ -88,7 +89,7 @@
             }
         });
     }
-    return contents.length > 0; 
+    return contents.length > 0;
 }
 
 @end

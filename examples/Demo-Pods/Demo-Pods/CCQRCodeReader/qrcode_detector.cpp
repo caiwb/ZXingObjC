@@ -70,7 +70,6 @@ bool QRDetector::isSimilarSquare(std::vector<cv::Point> points) {
 void QRDetector::detectQRCode(cv::Mat src) {
     CV_Assert(!src.empty());
     CV_Assert(src.depth() == CV_8U);
-    
     int cn = src.channels();
     if (cn == 3 || cn == 4) {
         cv::Mat gray;
@@ -86,46 +85,46 @@ void QRDetector::detectQRCode(cv::Mat src) {
         return;
     }
     cv::GaussianBlur(input, input, cv::Size(5, 5), cv::BORDER_CONSTANT);
-    m_thresh = 0;
-//    for (m_thresh = 270; m_thresh > 100; m_thresh -= 50) {
-//        if (tryDetectingQRCode(input)) {
-//            return;
-//        }
-//    }
-//
-//    m_blockSize = kBlockSizeInit;
-//    m_delta = kDeltaInit;
-//
-//    for (; m_delta >= kMinDelta; m_delta -= kDeltaStep) {
-//        if (tryDetectingQRCode(input)) {
-//            return;
-//        }
-//    }
-    m_blockSize = 11;
-    m_delta = 15;
-    if (tryDetectingQRCode(input)) {
-        return;
+    for (m_thresh = 270; m_thresh > 100; m_thresh -= 50) {
+        if (tryDetectingQRCode(input)) {
+            return;
+        }
     }
+
+    m_blockSize = kBlockSizeInit;
+    for (m_delta = kDeltaInit; m_delta >= kMinDelta; m_delta -= kDeltaStep) {
+        if (tryDetectingQRCode(input)) {
+            return;
+        }
+    }
+    tryDetectingQRCode(input);
 }
     
 bool QRDetector::tryDetectingQRCode(cv::Mat input) {
     bool ret = false;
-    cv::Mat output = cv::Mat(input);
+    cv::Mat output;
     
     // threshold
     if (m_thresh > 100) {
         cv::ThresholdTypes type = m_thresh > 255 ? cv::THRESH_OTSU : cv::THRESH_BINARY;
-        cv::threshold(output, output, m_thresh, 255, type);
+        cv::threshold(input, output, m_thresh, 255, type);
     }
     else {
-        cv::adaptiveThreshold(output, output, 255, CV_ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, m_blockSize, m_delta);
+        cv::adaptiveThreshold(input, output, 255, CV_ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, m_blockSize, m_delta);
     }
     ret = m_callback(output);
     if (ret) {
         return true;
     }
     
+    cv::Canny(output, output, 50, 200);
+    std::vector<std::vector<cv::Point>> contours;
+    std::vector<cv::Vec4i> hierarchy;
     
+    cv::findContours(output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_NONE, cv::Point(0, 0));
+    
+    // detect square
+    ret = detectSquare(output, contours, hierarchy);
     return ret;
 }
     
@@ -164,82 +163,3 @@ bool QRDetector::detectSquare(cv::Mat src, std::vector<std::vector<cv::Point>>co
     
 } // namespace ccqr
 
-
-/*
- cv::Mat output;
- if (src.type() != CV_8UC1) {
- cv::cvtColor(src, output, CV_BGR2GRAY);
- }
- else {
- output = src.clone();
- }
- 
- cv::GaussianBlur(output, output, cv::Size(5, 5), cv::BORDER_CONSTANT);
- if (self.thresholdType == CCQRDetectorThresholdTypeCommon) {
- int type = self.thresh <= 0 ? cv::THRESH_OTSU : cv::THRESH_BINARY;
- cv::threshold(output, output, self.thresh, 255, type);
- }
- else {
- cv::adaptiveThreshold(output, output, 255, CV_ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, self.thBlockSize, self.thDelta);
- }
- 
- if ([self.delegate respondsToSelector:@selector(didDetectQRCode:fromImage:)]) {
- [self.delegate didDetectQRCode:self fromImage:MatToUIImage(output)];
- }
- return YES;
- 
- BOOL ret = [self checkCvMat:output];
- if (ret) {
- return YES;
- }
- 
- // scale to 265
- cv::Mat scaled;
- double scale = 256.f / std::min(output.rows, output.cols);
- cv::Size size = cv::Size(output.cols * scale, output.rows * scale);
- cv::resize(output, scaled, size);
- ret = [self checkCvMat:scaled];
- if (ret) {
- return YES;
- }
- else if (self.processType == CCQRDetectorProcessTypeHasDetect) {
- // 如果已经找到二维码，但是解码失败，则不进入下一步，直接重试
- return NO;
- }
- 
- cv::Canny(output, output, 50, 200);
- std::vector<std::vector<cv::Point>> contours;
- std::vector<cv::Vec4i> hierarchy;
- 
- cv::findContours(output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_NONE, cv::Point(0, 0));
- 
- // todo: detect pattern
- //
- 
- // detect square
- ret = [self detectSquare:output contours:contours hierarchy:hierarchy];
- if (ret) {
- return YES;
- }
- return NO;
- */
-
-/*
- 
- //    for (int thresh = -1; thresh < 255; thresh += 50) {
- //        self.thresh = thresh;
- //        if ([self processCvMat:_gray]) {
- //            return;
- //        }
- //    }
- 
- self.thresholdType = CCQRDetectorThresholdTypeAdaptive;
- 
- for ( ; self.thBlockSize <= kMaxBlockSize; self.thBlockSize += kBlockSizeStep) {
- for ( ; self.thDelta >= kMinDelta; self.thDelta -= kDeltaStep) {
- if ([self processCvMat:_gray]) {
- return;
- }
- }
- }
- */
